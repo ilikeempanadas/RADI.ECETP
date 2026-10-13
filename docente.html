@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Académica Unificada - RADIxECETP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        radix: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#074e74',
+                            900: '#0c3a53',
+                            accent: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="h-full text-slate-800 font-sans flex flex-col antialiased selection:bg-radix-500 selection:text-white">
+
+    <!-- MAIN NAVBAR HEADER -->
+    <header class="bg-radix-900 text-white sticky top-0 z-50 shadow-lg border-b border-radix-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand / Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="checkAuthAndRender()">
+                    <div class="bg-gradient-to-tr from-radix-600 to-radix-accent p-2.5 rounded-xl shadow-md ring-2 ring-white/10">
+                        <i class="fa-solid fa-graduation-cap text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-white block">RADIx<span class="text-radix-accent">ECETP</span></span>
+                        <span id="nav-subtitle" class="text-[10px] uppercase font-semibold text-radix-100/70 tracking-wider block -mt-1">Portal Académico Unificado</span>
+                    </div>
+                </div>
+
+                <!-- Session & Profile Status Widget -->
+                <div id="nav-actions" class="flex items-center space-x-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APPLICATION CONTAINER -->
+    <main id="main-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ========================================== -->
+        <!-- 1. UNIFIED LOGIN VIEW (INDEX DEFAULT)      -->
+        <!-- ========================================== -->
+        <section id="view-login" class="space-y-8 max-w-4xl mx-auto my-auto pt-2 sm:pt-6">
+            <div class="text-center space-y-3">
+                <div class="inline-flex items-center space-x-2 bg-radix-50 text-radix-700 px-3.5 py-1.5 rounded-full text-xs font-semibold border border-radix-200 shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-radix-500"></i>
+                    <span>Sistema de Gestión Educativa Integrado</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    Bienvenido a RADIx<span class="text-radix-600">ECETP</span>
+                </h1>
+                <p class="text-slate-500 text-sm max-w-lg mx-auto">
+                    Ingrese con su documento o correo institucional para acceder a su portal.
+                </p>
+            </div>
+
+            <!-- Login Card -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                
+                <!-- Quick Demo Login Selector -->
+                <div class="md:col-span-5 bg-white p-6 rounded-3xl shadow-md border border-slate-200/80 space-y-4">
+                    <div class="flex items-center space-x-2 border-b border-slate-100 pb-3">
+                        <i class="fa-solid fa-bolt text-amber-500 text-lg"></i>
+                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Acceso Rápido (Demo BD)</h3>
+                    </div>
+                    <p class="text-xs text-slate-500">Haga clic en cualquiera de los usuarios precargados en la base de datos de prueba:</p>
+
+                    <div class="space-y-2.5">
+                        <button onclick="quickLogin('1032445717', '12345678')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-radix-500 bg-slate-50 hover:bg-radix-50/50 transition-all text-left flex items-center justify-between group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-xs">IM</div>
+                                <div>
+                                    <span class="font-bold text-slate-800 text-xs block group-hover:text-radix-700">Imary Mejía Betancur</span>
+                                    <span class="text-[10px] text-slate-500">Rol: Estudiante | Grupo 11-1</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-radix-600"></i>
+                        </button>
+
+                        <button onclick="quickLogin('10010019', '12345678')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-radix-500 bg-slate-50 hover:bg-radix-50/50 transition-all text-left flex items-center justify-between group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-xs">AG</div>
+                                <div>
+                                    <span class="font-bold text-slate-800 text-xs block group-hover:text-radix-700">Alejandro Gómez Restrepo</span>
+                                    <span class="text-[10px] text-slate-500">Rol: Estudiante | Grupo 11-1</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-radix-600"></i>
+                        </button>
+
+                        <button onclick="quickLogin('wquintero@elpinal.edu.co', '12345678')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-emerald-500 bg-slate-50 hover:bg-emerald-50/50 transition-all text-left flex items-center justify-between group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-xs">WQ</div>
+                                <div>
+                                    <span class="font-bold text-slate-800 text-xs block group-hover:text-emerald-700">Wilson de Jesús Quintero</span>
+                                    <span class="text-[10px] text-emerald-600 font-semibold">Rol: Docente | Sistemas/Redes</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-emerald-600"></i>
+                        </button>
+
+                        <button onclick="quickLogin('10010001', 'admin2026')" class="w-full p-3 rounded-2xl border border-slate-200 hover:border-purple-500 bg-slate-50 hover:bg-purple-50/50 transition-all text-left flex items-center justify-between group">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-800 font-bold flex items-center justify-center text-xs">AD</div>
+                                <div>
+                                    <span class="font-bold text-slate-800 text-xs block group-hover:text-purple-700">Admin General</span>
+                                    <span class="text-[10px] text-purple-600 font-semibold">Rol: Administrador</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-chevron-right text-xs text-slate-400 group-hover:text-purple-600"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Login Box -->
+                <div class="md:col-span-7 bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-200/80">
+                    <form id="form-login" onsubmit="handleLogin(event)" class="space-y-5">
+                        <div>
+                            <label for="login-user" class="block text-xs font-bold uppercase text-slate-600 mb-1.5">Documento de Identidad o Correo</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-user-lock absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                                <input type="text" id="login-user" required placeholder="ej. 1032445717 o wquintero@elpinal.edu.co" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="login-pass" class="block text-xs font-bold uppercase text-slate-600 mb-1.5">Contraseña</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-key absolute left-3.5 top-3.5 text-slate-400 text-sm"></i>
+                                <input type="password" id="login-pass" required placeholder="••••••••" class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none transition-all font-medium">
+                            </div>
+                        </div>
+
+                        <div id="login-alert" class="hidden p-3.5 rounded-xl text-xs font-medium bg-rose-50 border border-rose-200 text-rose-700 space-x-2 flex items-center">
+                            <i class="fa-solid fa-circle-exclamation text-rose-500 text-base flex-shrink-0"></i>
+                            <span id="login-alert-msg">Credenciales incorrectas.</span>
+                        </div>
+
+                        <button type="submit" class="w-full bg-radix-900 hover:bg-radix-800 text-white font-bold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center space-x-2 text-sm">
+                            <span>Ingresar al Sistema</span>
+                            <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. STUDENT PORTAL VIEW (ROL: ESTUDIANTE)   -->
+        <!-- ========================================== -->
+        <section id="view-student-portal" class="hidden space-y-6">
+
+            <!-- Student Header Badge -->
+            <div class="bg-gradient-to-r from-radix-900 via-radix-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-radix-700/50">
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center space-x-4 sm:space-x-6">
+                        <div id="est-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-radix-600 to-radix-accent text-white flex items-center justify-center text-2xl sm:text-3xl font-extrabold shadow-lg border-2 border-white/20">
+                            --
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="bg-radix-accent/20 border border-radix-accent/40 text-radix-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center space-x-1">
+                                    <i class="fa-solid fa-graduation-cap text-radix-accent"></i>
+                                    <span>Portal Estudiantil</span>
+                                </span>
+                                <span id="est-badge-grupo" class="bg-white/10 text-radix-100 text-[10px] font-bold px-2 py-0.5 rounded-md">Grupo: --</span>
+                            </div>
+                            <h2 id="est-nombre-header" class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">--- ---</h2>
+                            <div class="flex flex-wrap gap-3 text-xs text-slate-300 font-medium pt-1">
+                                <span id="est-correo-header"><i class="fa-regular fa-envelope text-radix-200 mr-1"></i>--</span>
+                                <span id="est-doc-header"><i class="fa-regular fa-id-card text-radix-200 mr-1"></i>Doc: --</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3 w-full md:w-auto justify-end border-t border-radix-700/50 md:border-t-0 pt-4 md:pt-0">
+                        <button onclick="handleLogout()" class="w-full md:w-auto px-5 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 hover:text-white border border-rose-400/30 font-semibold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Student Tabs -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm px-4 sm:px-6 flex space-x-2 sm:space-x-6 overflow-x-auto">
+                <button id="est-tab-btn-perfil" onclick="switchStudentTab('perfil')" class="py-4 px-2 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-id-card-clip"></i>
+                    <span>Información Personal</span>
+                </button>
+                <button id="est-tab-btn-notas" onclick="switchStudentTab('notas')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Mis Calificaciones</span>
+                </button>
+                <button id="est-tab-btn-anotaciones" onclick="switchStudentTab('anotaciones')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Observador / Descargos</span>
+                </button>
+            </div>
+
+            <!-- TAB ESTUDIANTE 1: PERFIL -->
+            <div id="est-tab-content-perfil" class="space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-slate-800 text-base border-b border-slate-100 pb-2">Datos del Estudiante</h3>
+                        <div class="space-y-2.5 text-xs">
+                            <p class="text-slate-500">Nombre Completo: <strong id="est-profile-nombre" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Documento de Identidad: <strong id="est-profile-doc" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Correo Electrónico: <strong id="est-profile-correo" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Teléfono Contacto: <strong id="est-profile-telefono" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Género: <strong id="est-profile-genero" class="text-slate-800 font-semibold">--</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                        <h3 class="font-bold text-slate-800 text-base border-b border-slate-200 pb-2">Información del Acudiente</h3>
+                        <div class="space-y-2.5 text-xs">
+                            <p class="text-slate-500">Nombre Completo: <strong id="est-profile-acudiente" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Parentezco / Relación: <strong id="est-profile-parentezco" class="text-slate-800 font-semibold">--</strong></p>
+                            <p class="text-slate-500">Estado de Matrícula: <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]">Activo en Sistema</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB ESTUDIANTE 2: NOTAS -->
+            <div id="est-tab-content-notas" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <h3 class="font-bold text-slate-800 text-lg">Boletín de Calificaciones</h3>
+                        <span class="text-xs text-slate-500">Fórmula de Calificación: <strong>70% Actividad + 15% Auto + 15% Coev</strong></span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b border-slate-200">
+                                    <th class="py-3 px-4"># ID</th>
+                                    <th class="py-3 px-4">Descripción de Evaluación</th>
+                                    <th class="py-3 px-3 text-center">Nota Actividad (70%)</th>
+                                    <th class="py-3 px-3 text-center">Auto (15%)</th>
+                                    <th class="py-3 px-3 text-center">Coev (15%)</th>
+                                    <th class="py-3 px-3 text-center font-bold text-slate-800">Total Definitivo</th>
+                                    <th class="py-3 px-4 text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="est-tabla-notas-body" class="divide-y divide-slate-100 text-sm">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB ESTUDIANTE 3: ANOTACIONES & DESCARGOS -->
+            <div id="est-tab-content-anotaciones" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+                    <div class="pb-3 border-b border-slate-100">
+                        <h3 class="font-bold text-slate-800 text-lg">Observador Disciplinario</h3>
+                        <p class="text-xs text-slate-500">Revise las faltas notificadas por sus docentes e ingrese su versión de los hechos o descargos.</p>
+                    </div>
+
+                    <div id="est-anotaciones-container" class="space-y-4">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. TEACHER / ADMIN PORTAL VIEW             -->
+        <!-- ========================================== -->
+        <section id="view-teacher-portal" class="hidden space-y-6">
+
+            <!-- Teacher Header Badge -->
+            <div class="bg-gradient-to-r from-radix-900 via-radix-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-radix-700/50">
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center space-x-4 sm:space-x-6">
+                        <div id="doc-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-radix-600 to-radix-accent text-white flex items-center justify-center text-2xl sm:text-3xl font-extrabold shadow-lg border-2 border-white/20">
+                            WQ
+                        </div>
+
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="bg-radix-accent/20 border border-radix-accent/40 text-radix-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center space-x-1">
+                                    <i class="fa-solid fa-user-check text-radix-accent"></i>
+                                    <span id="doc-role-badge">Módulo Gestión Docente</span>
+                                </span>
+                            </div>
+                            <h2 id="doc-nombre-header" class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">Wilson de Jesús Quintero</h2>
+                            <div class="flex flex-wrap gap-3 text-xs text-slate-300 font-medium pt-1">
+                                <span id="doc-correo-header"><i class="fa-regular fa-envelope text-radix-200 mr-1"></i>wquintero@elpinal.edu.co</span>
+                                <span id="doc-badge-doc"><i class="fa-regular fa-id-card text-radix-200 mr-1"></i>Doc: 10010009</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3 w-full md:w-auto justify-end border-t border-radix-700/50 md:border-t-0 pt-4 md:pt-0">
+                        <button onclick="handleLogout()" class="w-full md:w-auto px-5 py-2.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 hover:text-white border border-rose-400/30 font-semibold text-xs rounded-xl transition-all flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Teacher Navigation Tabs -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm px-4 sm:px-6 flex space-x-2 sm:space-x-6 overflow-x-auto">
+                <button id="doc-tab-btn-cursos" onclick="switchTeacherTab('cursos')" class="py-4 px-2 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span>Mis Grados y Materias</span>
+                </button>
+                <button id="doc-tab-btn-estudiantes" onclick="switchTeacherTab('estudiantes')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Estudiantes por Grupo</span>
+                </button>
+                <button id="doc-tab-btn-notas" onclick="switchTeacherTab('notas')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <span>Gestión de Notas</span>
+                </button>
+                <button id="doc-tab-btn-anotaciones" onclick="switchTeacherTab('anotaciones')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <span>Observador Disciplinario</span>
+                </button>
+            </div>
+
+            <!-- TAB DOCENTE 1: CURSOS Y MATERIAS -->
+            <div id="doc-tab-content-cursos" class="space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                    <div class="flex items-center space-x-3 mb-6 pb-3 border-b border-slate-100">
+                        <div class="bg-radix-50 text-radix-600 p-3 rounded-xl">
+                            <i class="fa-solid fa-graduation-cap text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">Asignaciones Académicas Registradas</h3>
+                            <p class="text-xs text-slate-500">Materias e intensidades horarias asignadas al usuario</p>
+                        </div>
+                    </div>
+
+                    <div id="doc-asignaciones-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB DOCENTE 2: ESTUDIANTES POR GRUPO -->
+            <div id="doc-tab-content-estudiantes" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-6">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">Listado de Estudiantes Matriculados</h3>
+                            <p class="text-xs text-slate-500">Seleccione el grupo para filtrar sus alumnos</p>
+                        </div>
+
+                        <!-- Selector de Grupo -->
+                        <div class="flex items-center space-x-2 w-full sm:w-auto">
+                            <label for="doc-select-grupo-estudiantes" class="text-xs font-bold text-slate-500 uppercase">Grupo:</label>
+                            <select id="doc-select-grupo-estudiantes" onchange="renderEstudiantesByGrupo()" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="doc-estudiantes-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB DOCENTE 3: PLANILLA Y GESTIÓN DE NOTAS -->
+            <div id="doc-tab-content-notas" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-6">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">Planilla de Calificaciones</h3>
+                            <p class="text-xs text-slate-500">Cálculo automático: <strong>70% Nota + 15% Auto + 15% Coev</strong></p>
+                        </div>
+
+                        <button onclick="openNuevaNotaModal()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow transition-all flex items-center space-x-2">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Agregar Nueva Actividad</span>
+                        </button>
+                    </div>
+
+                    <!-- Tabla Interactiva de Notas -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b border-slate-200">
+                                    <th class="py-3 px-4"># ID</th>
+                                    <th class="py-3 px-4">Estudiante Asignado</th>
+                                    <th class="py-3 px-4">Descripción de la Actividad</th>
+                                    <th class="py-3 px-3 text-center">Nota Parcial (70%)</th>
+                                    <th class="py-3 px-3 text-center">Autoevaluación (15%)</th>
+                                    <th class="py-3 px-3 text-center">Coevaluación (15%)</th>
+                                    <th class="py-3 px-3 text-center font-bold text-slate-800">Definitiva</th>
+                                    <th class="py-3 px-4 text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doc-tabla-notas-body" class="divide-y divide-slate-100 text-sm">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB DOCENTE 4: CREAR Y VER ANOTACIONES -->
+            <div id="doc-tab-content-anotaciones" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Formulario para Registrar Nueva Falta -->
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4 h-fit">
+                        <div class="pb-3 border-b border-slate-100">
+                            <h3 class="font-bold text-slate-800 text-base">Crear Anotación</h3>
+                            <p class="text-xs text-slate-500">Notificar al observador del alumno</p>
+                        </div>
+
+                        <form id="form-anotacion" onsubmit="handleCrearAnotacion(event)" class="space-y-4">
+                            <div>
+                                <label for="anot-estudiante" class="block text-xs font-bold uppercase text-slate-600 mb-1">Estudiante</label>
+                                <select id="anot-estudiante" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                                    <!-- Populated via JS -->
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="anot-tipo" class="block text-xs font-bold uppercase text-slate-600 mb-1">Tipo de Falta</label>
+                                <select id="anot-tipo" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                                    <option value="Tipo 1 - Leve">Tipo 1 - Leve</option>
+                                    <option value="Tipo 2 - Grave">Tipo 2 - Grave</option>
+                                    <option value="Tipo 3 - Gravísima">Tipo 3 - Gravísima</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="anot-desc" class="block text-xs font-bold uppercase text-slate-600 mb-1">Descripción del Incidente</label>
+                                <textarea id="anot-desc" required rows="4" placeholder="Detalle los hechos observados..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 rounded-xl shadow transition-all text-xs flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Registrar en Observador</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Listado de Anotaciones del Docente -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+                        <div class="pb-3 border-b border-slate-100">
+                            <h3 class="font-bold text-slate-800 text-base">Historial de Anotaciones y Descargos</h3>
+                            <p class="text-xs text-slate-500">Faltas registradas e interacciones ingresadas por los estudiantes</p>
+                        </div>
+
+                        <div id="doc-anotaciones-container" class="space-y-4">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL PARA AGREGAR NUEVA NOTA -->
+    <div id="modal-nueva-nota" class="hidden fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-slate-800 text-base">Registrar Nueva Nota</h3>
+                <button onclick="closeNuevaNotaModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <form onsubmit="handleGuardarNuevaNota(event)" class="space-y-4">
+                <div>
+                    <label for="modal-select-estudiante" class="block text-xs font-bold uppercase text-slate-600 mb-1">Estudiante</label>
+                    <select id="modal-select-estudiante" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                        <!-- Populated via JS -->
+                    </select>
+                </div>
+
+                <div>
+                    <label for="modal-input-desc" class="block text-xs font-bold uppercase text-slate-600 mb-1">Descripción de la Actividad</label>
+                    <input type="text" id="modal-input-desc" required placeholder="ej. Taller 2: Algoritmos" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label for="modal-input-nota" class="block text-[10px] font-bold uppercase text-slate-600 mb-1">Nota (70%)</label>
+                        <input type="number" id="modal-input-nota" step="0.1" min="0" max="5" value="4.0" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-center font-mono focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="modal-input-auto" class="block text-[10px] font-bold uppercase text-slate-600 mb-1">Auto (15%)</label>
+                        <input type="number" id="modal-input-auto" step="0.1" min="0" max="5" value="4.0" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-center font-mono focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label for="modal-input-coev" class="block text-[10px] font-bold uppercase text-slate-600 mb-1">Coev (15%)</label>
+                        <input type="number" id="modal-input-coev" step="0.1" min="0" max="5" value="4.0" required class="w-full p-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-center font-mono focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-2 pt-2 border-t border-slate-100">
+                    <button type="button" onclick="closeNuevaNotaModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 font-semibold text-xs rounded-xl transition-all">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs rounded-xl shadow transition-all">Guardar en BD</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center space-x-2">
+                <span class="font-extrabold text-slate-700">RADIxECETP &copy; 2026</span>
+                <span>•</span>
+                <span>Plataforma Educativa Integrada</span>
+            </div>
+            <div id="footer-status-user" class="text-slate-400">
+                Estado: Sin Sesión Activa
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const STORAGE_KEY_USER_ID = 'radix_logged_user_id';
+        const STORAGE_KEY_NOTAS = 'radix_db_notas';
+
+        /**
+         * Base de Datos Integrada basada en el script 'prueba.sql'
+         */
+        const DATABASE = {
+            personas: [
+                { id_persona: 1, documento_identidad: 1032445717, nombre_1: 'Imary', nombre_2: null, apellido_1: 'Mejía', apellido_2: 'Betancur', correo_electronico: 'imary.mejia@gmail.com', telefono: '3022445717', genero: 'Femenino', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 2, documento_identidad: 10010019, nombre_1: 'Alejandro', nombre_2: null, apellido_1: 'Gómez', apellido_2: 'Restrepo', correo_electronico: 'agomez@gmail.com', telefono: '3110001122', genero: 'Masculino', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 3, documento_identidad: 10010009, nombre_1: 'Wilson', nombre_2: 'de Jesús', apellido_1: 'Quintero', apellido_2: null, correo_electronico: 'wquintero@elpinal.edu.co', telefono: '3147892011', genero: 'Masculino', rol: 'Docente', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 4, documento_identidad: 10010001, nombre_1: 'Admin', nombre_2: null, apellido_1: 'General', apellido_2: null, correo_electronico: 'admin@radix.edu.co', telefono: '3000000000', genero: 'Masculino', rol: 'Administrador', contraseña: 'admin2026', estado: 'Activo' }
+            ],
+
+            estudiantes: [
+                { id_estudiante: 1, id_persona: 1, id_grupo: 1, nombre_completo_acudiente: 'Maria Elena Betancur', parentezco_acudiente: 'Madre' },
+                { id_estudiante: 2, id_persona: 2, id_grupo: 1, nombre_completo_acudiente: 'Carlos Gómez', parentezco_acudiente: 'Padre' }
+            ],
+
+            grupos: [
+                { id_grupo: 1, nombre_grupo: '11-1', jornada: 'Mañana', grado: 11 },
+                { id_grupo: 2, nombre_grupo: '10-1', jornada: 'Mañana', grado: 10 }
+            ],
+
+            materias: [
+                { id_materia: 1, nombre_materia: 'Sistemas y Redes', intensidad_horaria: 4 },
+                { id_materia: 2, nombre_materia: 'Mantenimiento de Cómputo', intensidad_horaria: 3 },
+                { id_materia: 3, nombre_materia: 'Lógica de Programación', intensidad_horaria: 5 }
+            ],
+
+            asignaciones: [
+                { id_asignacion: 1, id_persona: 3, id_materia: 1, id_grupo: 1, fecha_asignacion: '2026-09-24' },
+                { id_asignacion: 2, id_persona: 3, id_materia: 2, id_grupo: 1, fecha_asignacion: '2026-09-24' }
+            ],
+
+            notas: [
+                { id_nota: 1, id_estudiante: 1, calficacion: 4.50, autoevaluacion: 4.00, coevalucion: 4.50, total: 4.42, estado: 'Aprobado', descripcion: 'Taller 1: Funciones Matemáticas' },
+                { id_nota: 2, id_estudiante: 1, calficacion: 2.00, autoevaluacion: 3.00, coevalucion: 2.50, total: 2.22, estado: 'Reprobado', descripcion: 'Evaluación Parcial: Redes LAN' },
+                { id_nota: 3, id_estudiante: 2, calficacion: 4.80, autoevaluacion: 4.50, coevalucion: 4.50, total: 4.71, estado: 'Aprobado', descripcion: 'Taller 1: Funciones Matemáticas' }
+            ],
+
+            anotaciones: [
+                {
+                    id_anotacion: 1,
+                    id_estudiante: 1,
+                    id_docente: 3,
+                    fecha_hora: '2026-08-05 09:15:00',
+                    tipo_falta: 'Tipo 1 - Leve',
+                    descripcion_anotacion: 'El estudiante se encontraba utilizando el dispositivo móvil durante el desarrollo de la explicación práctica de ensamble de hardware.',
+                    version_estudiante: 'Estaba revisando la guía en PDF sobre ensamble que el profesor subió previamente al grupo de estudio, no estaba jugando.',
+                    estado_apelacion: 'En Revisión'
+                },
+                {
+                    id_anotacion: 2,
+                    id_estudiante: 1,
+                    id_docente: 3,
+                    fecha_hora: '2026-07-28 07:35:00',
+                    tipo_falta: 'Tipo 2 - Grave',
+                    descripcion_anotacion: 'Ingreso al aula con 35 minutos de retraso interrumpiendo la evaluación parcial en curso sin presentar justificación.',
+                    version_estudiante: null,
+                    estado_apelacion: 'Sin Apelación'
+                }
+            ]
+        };
+
+        // Cargar notas desde el almacenamiento local si existen
+        function initNotasStorage() {
+            const savedNotas = localStorage.getItem(STORAGE_KEY_NOTAS);
+            if (savedNotas) {
+                try {
+                    DATABASE.notas = JSON.parse(savedNotas);
+                } catch (e) {
+                    console.error("Error al cargar las notas guardadas", e);
+                }
+            } else {
+                saveNotasToStorage();
+            }
+        }
+
+        function saveNotasToStorage() {
+            localStorage.setItem(STORAGE_KEY_NOTAS, JSON.stringify(DATABASE.notas));
+        }
+
+        let currentUser = null;
+
+        window.onload = function() {
+            initNotasStorage();
+            checkAuthAndRender();
+        };
+
+        function checkAuthAndRender() {
+            const storedId = localStorage.getItem(STORAGE_KEY_USER_ID);
+
+            if (storedId) {
+                const foundUser = DATABASE.personas.find(p => p.id_persona === parseInt(storedId));
+                if (foundUser) {
+                    currentUser = foundUser;
+                    renderRolePortal();
+                    return;
+                }
+            }
+
+            currentUser = null;
+            renderLoginView();
+        }
+
+        function quickLogin(userDocOrEmail, pass) {
+            document.getElementById('login-user').value = userDocOrEmail;
+            document.getElementById('login-pass').value = pass;
+            handleLogin(new Event('submit'));
+        }
+
+        function handleLogin(e) {
+            if (e && e.preventDefault) e.preventDefault();
+
+            const userInput = document.getElementById('login-user').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
+            const alertBox = document.getElementById('login-alert');
+            const alertMsg = document.getElementById('login-alert-msg');
+
+            const foundUser = DATABASE.personas.find(p => 
+                (p.correo_electronico.toLowerCase() === userInput.toLowerCase() || p.documento_identidad.toString() === userInput) &&
+                p.contraseña === passInput
+            );
+
+            if (!foundUser) {
+                alertMsg.textContent = 'Credenciales no válidas o usuario no registrado.';
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            localStorage.setItem(STORAGE_KEY_USER_ID, foundUser.id_persona);
+            currentUser = foundUser;
+            alertBox.classList.add('hidden');
+            renderRolePortal();
+        }
+
+        function handleLogout() {
+            localStorage.removeItem(STORAGE_KEY_USER_ID);
+            currentUser = null;
+            renderLoginView();
+        }
+
+        function renderLoginView() {
+            document.getElementById('view-login').classList.remove('hidden');
+            document.getElementById('view-student-portal').classList.add('hidden');
+            document.getElementById('view-teacher-portal').classList.add('hidden');
+
+            document.getElementById('nav-subtitle').textContent = "Portal Académico Unificado";
+
+            document.getElementById('nav-actions').innerHTML = `
+                <span class="text-xs font-medium text-radix-200/80 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+                    <i class="fa-solid fa-lock mr-1 text-radix-accent"></i> Sesión Cerrada
+                </span>
+            `;
+
+            document.getElementById('footer-status-user').innerHTML = `Estado: <span class="font-semibold text-slate-600">Sin Sesión Activa</span>`;
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('login-alert').classList.add('hidden');
+        }
+
+        function renderRolePortal() {
+            if (!currentUser) return;
+
+            document.getElementById('view-login').classList.add('hidden');
+
+            const nombreCompleto = `${currentUser.nombre_1} ${currentUser.nombre_2 || ''} ${currentUser.apellido_1} ${currentUser.apellido_2 || ''}`.replace(/\s+/g, ' ').trim();
+            const iniciales = `${currentUser.nombre_1.charAt(0)}${currentUser.apellido_1.charAt(0)}`;
+
+            document.getElementById('nav-actions').innerHTML = `
+                <div class="flex items-center space-x-3 bg-radix-800/90 px-3.5 py-1.5 rounded-xl border border-radix-700 shadow-inner">
+                    <div class="w-8 h-8 rounded-lg bg-radix-500 text-white font-bold flex items-center justify-center text-xs">
+                        ${iniciales}
+                    </div>
+                    <div class="text-right">
+                        <span class="block text-xs font-bold text-white">${currentUser.nombre_1} ${currentUser.apellido_1}</span>
+                        <span class="block text-[10px] text-radix-accent font-mono font-semibold">Rol: ${currentUser.rol}</span>
+                    </div>
+                    <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-300 hover:text-rose-400 p-1.5 transition-colors ml-1">
+                        <i class="fa-solid fa-power-off text-sm"></i>
+                    </button>
+                </div>
+            `;
+
+            document.getElementById('footer-status-user').innerHTML = `Sesión: <strong class="text-slate-700">${nombreCompleto} (${currentUser.rol})</strong>`;
+
+            if (currentUser.rol === 'Estudiante') {
+                document.getElementById('view-student-portal').classList.remove('hidden');
+                document.getElementById('view-teacher-portal').classList.add('hidden');
+                document.getElementById('nav-subtitle').textContent = "Módulo del Estudiante";
+                renderStudentPortal(nombreCompleto, iniciales);
+            } else {
+                // Docente o Administrador
+                document.getElementById('view-teacher-portal').classList.remove('hidden');
+                document.getElementById('view-student-portal').classList.add('hidden');
+                document.getElementById('nav-subtitle').textContent = currentUser.rol === 'Administrador' ? "Módulo Administrador" : "Módulo del Docente";
+                document.getElementById('doc-role-badge').textContent = currentUser.rol === 'Administrador' ? "Gestión Administrativa General" : "Módulo Gestión Docente";
+                renderTeacherPortal(nombreCompleto, iniciales);
+            }
+        }
+
+        /* ========================================== */
+        /* LOGICA ROL ESTUDIANTE                      */
+        /* ========================================== */
+        function renderStudentPortal(nombreCompleto, iniciales) {
+            const estudianteData = DATABASE.estudiantes.find(e => e.id_persona === currentUser.id_persona);
+            const grupoData = estudianteData ? DATABASE.grupos.find(g => g.id_grupo === estudianteData.id_grupo) : null;
+
+            document.getElementById('est-avatar').textContent = iniciales;
+            document.getElementById('est-nombre-header').textContent = nombreCompleto;
+            document.getElementById('est-correo-header').innerHTML = `<i class="fa-regular fa-envelope text-radix-200 mr-1"></i>${currentUser.correo_electronico}`;
+            document.getElementById('est-doc-header').innerHTML = `<i class="fa-regular fa-id-card text-radix-200 mr-1"></i>Doc: ${currentUser.documento_identidad}`;
+            document.getElementById('est-badge-grupo').textContent = `Grupo: ${grupoData ? grupoData.nombre_grupo : '11-1'}`;
+
+            // Perfil
+            document.getElementById('est-profile-nombre').textContent = nombreCompleto;
+            document.getElementById('est-profile-doc').textContent = currentUser.documento_identidad;
+            document.getElementById('est-profile-correo').textContent = currentUser.correo_electronico;
+            document.getElementById('est-profile-telefono').textContent = currentUser.telefono;
+            document.getElementById('est-profile-genero').textContent = currentUser.genero;
+            document.getElementById('est-profile-acudiente').textContent = estudianteData ? estudianteData.nombre_completo_acudiente : 'N/A';
+            document.getElementById('est-profile-parentezco').textContent = estudianteData ? estudianteData.parentezco_acudiente : 'N/A';
+
+            renderStudentNotas(estudianteData ? estudianteData.id_estudiante : 1);
+            renderStudentAnotaciones(estudianteData ? estudianteData.id_estudiante : 1);
+            switchStudentTab('perfil');
+        }
+
+        function renderStudentNotas(idEstudiante) {
+            const tbody = document.getElementById('est-tabla-notas-body');
+            tbody.innerHTML = '';
+
+            const notasEstudiante = DATABASE.notas.filter(n => parseInt(n.id_estudiante) === parseInt(idEstudiante));
+
+            if (notasEstudiante.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="py-6 text-center text-slate-400 text-xs">No hay notas registradas para su usuario.</td></tr>`;
+                return;
+            }
+
+            notasEstudiante.forEach(nota => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+                const isAprobado = parseFloat(nota.total) >= 3.0;
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-mono text-xs text-slate-400">#${nota.id_nota}</td>
+                    <td class="py-3.5 px-4 font-semibold text-slate-800">${nota.descripcion}</td>
+                    <td class="py-3.5 px-3 text-center font-mono font-medium">${parseFloat(nota.calficacion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono text-slate-500">${parseFloat(nota.autoevaluacion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono text-slate-500">${parseFloat(nota.coevalucion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono font-extrabold text-slate-900">${parseFloat(nota.total).toFixed(2)}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isAprobado ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isAprobado ? 'Aprobado' : 'Reprobado'}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderStudentAnotaciones(idEstudiante) {
+            const container = document.getElementById('est-anotaciones-container');
+            container.innerHTML = '';
+
+            const anotacionesEst = DATABASE.anotaciones.filter(a => parseInt(a.id_estudiante) === parseInt(idEstudiante));
+
+            if (anotacionesEst.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">No tiene faltas o reportes disciplinarios.</div>`;
+                return;
+            }
+
+            anotacionesEst.forEach(anot => {
+                const docentePersona = DATABASE.personas.find(p => p.id_persona === anot.id_docente);
+                const nombreDoc = docentePersona ? `${docentePersona.nombre_1} ${docentePersona.apellido_1}` : 'Docente';
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-50/80 rounded-2xl border border-slate-200 p-4 space-y-3";
+                
+                card.innerHTML = `
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-slate-800 text-sm">Prof. ${nombreDoc}</span>
+                            <span class="border text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border-amber-200">${anot.tipo_falta}</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono">${anot.fecha_hora}</span>
+                    </div>
+
+                    <p class="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200">
+                        ${anot.descripcion_anotacion}
+                    </p>
+
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-600 text-xs">Su Versión de los Hechos (Descargos):</span>
+                            <span class="text-[10px] font-bold text-radix-600 bg-radix-50 px-2 py-0.5 rounded border border-radix-200">${anot.estado_apelacion || 'Sin Apelación'}</span>
+                        </div>
+
+                        ${anot.version_estudiante ? `
+                            <p class="text-xs italic text-slate-700 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+                                "${anot.version_estudiante}"
+                            </p>
+                        ` : `
+                            <div class="space-y-2 pt-1">
+                                <textarea id="input-descargo-${anot.id_anotacion}" rows="2" placeholder="Escriba aquí sus descargos o justificación..." class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none"></textarea>
+                                <button onclick="guardarDescargoEstudiante(${anot.id_anotacion})" class="px-3 py-1.5 bg-radix-600 hover:bg-radix-700 text-white font-bold text-xs rounded-lg shadow transition-all">
+                                    Enviar Descargos y Solicitar Apelación
+                                </button>
+                            </div>
+                        `}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function guardarDescargoEstudiante(idAnotacion) {
+            const txt = document.getElementById(`input-descargo-${idAnotacion}`).value.trim();
+            if (!txt) return;
+
+            const anot = DATABASE.anotaciones.find(a => a.id_anotacion === idAnotacion);
+            if (anot) {
+                anot.version_estudiante = txt;
+                anot.estado_apelacion = 'En Revisión';
+                const estudianteData = DATABASE.estudiantes.find(e => e.id_persona === currentUser.id_persona);
+                renderStudentAnotaciones(estudianteData ? estudianteData.id_estudiante : 1);
+            }
+        }
+
+        function switchStudentTab(tab) {
+            ['perfil', 'notas', 'anotaciones'].forEach(t => {
+                const btn = document.getElementById(`est-tab-btn-${t}`);
+                const content = document.getElementById(`est-tab-content-${t}`);
+                if (t === tab) {
+                    btn.className = "py-4 px-2 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+
+        /* ========================================== */
+        /* LOGICA ROL DOCENTE / ADMINISTRADOR         */
+        /* ========================================== */
+        function renderTeacherPortal(nombreCompleto, iniciales) {
+            document.getElementById('doc-avatar').textContent = iniciales;
+            document.getElementById('doc-nombre-header').textContent = nombreCompleto;
+            document.getElementById('doc-correo-header').innerHTML = `<i class="fa-regular fa-envelope text-radix-200 mr-1"></i>${currentUser.correo_electronico}`;
+            document.getElementById('doc-badge-doc').innerHTML = `<i class="fa-regular fa-id-card text-radix-200 mr-1"></i>Doc: ${currentUser.documento_identidad}`;
+
+            renderTeacherCursos();
+            populateTeacherGrupoSelect();
+            renderEstudiantesByGrupo();
+            renderTeacherTablaNotas();
+            populateEstudiantesAnotacionSelect();
+            renderTeacherAnotaciones();
+
+            switchTeacherTab('cursos');
+        }
+
+        function renderTeacherCursos() {
+            const container = document.getElementById('doc-asignaciones-list');
+            container.innerHTML = '';
+
+            const asignaciones = currentUser.rol === 'Administrador' 
+                ? DATABASE.asignaciones 
+                : DATABASE.asignaciones.filter(a => a.id_persona === currentUser.id_persona);
+
+            asignaciones.forEach(asig => {
+                const materia = DATABASE.materias.find(m => m.id_materia === asig.id_materia);
+                const grupo = DATABASE.grupos.find(g => g.id_grupo === asig.id_grupo);
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 hover:bg-white p-5 rounded-2xl border border-slate-200 transition-all hover:shadow-md space-y-3";
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="bg-radix-100 text-radix-800 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-radix-200">
+                            Grupo ${grupo ? grupo.nombre_grupo : '11-1'} (Grado ${grupo ? grupo.grado : 11})
+                        </span>
+                        <span class="text-[11px] text-slate-400 font-mono">
+                            <i class="fa-regular fa-sun text-amber-500 mr-1"></i>${grupo ? grupo.jornada : 'Mañana'}
+                        </span>
+                    </div>
+
+                    <div>
+                        <h4 class="font-extrabold text-slate-800 text-base">${materia ? materia.nombre_materia : 'Asignatura'}</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">Intensidad: <strong>${materia ? materia.intensidad_horaria : 0} horas/semana</strong></p>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">Asignado: ${asig.fecha_asignacion}</span>
+                        <button onclick="switchTeacherTab('notas')" class="text-radix-600 hover:text-radix-700 font-bold flex items-center space-x-1">
+                            <span>Ir a Planilla</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function populateTeacherGrupoSelect() {
+            const select = document.getElementById('doc-select-grupo-estudiantes');
+            select.innerHTML = '';
+
+            DATABASE.grupos.forEach(g => {
+                const opt = document.createElement('option');
+                opt.value = g.id_grupo;
+                opt.textContent = `Grupo ${g.nombre_grupo} (Grado ${g.grado})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function renderEstudiantesByGrupo() {
+            const grupoId = parseInt(document.getElementById('doc-select-grupo-estudiantes').value);
+            const container = document.getElementById('doc-estudiantes-container');
+            container.innerHTML = '';
+
+            const estudiantesGrupo = DATABASE.estudiantes.filter(e => e.id_grupo === grupoId);
+
+            estudiantesGrupo.forEach(est => {
+                const persona = DATABASE.personas.find(p => p.id_persona === est.id_persona);
+                if (!persona) return;
+
+                const nombreEst = `${persona.nombre_1} ${persona.nombre_2 || ''} ${persona.apellido_1} ${persona.apellido_2 || ''}`.replace(/\s+/g, ' ').trim();
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 p-4 rounded-2xl border border-slate-200/80 flex items-start space-x-4";
+                card.innerHTML = `
+                    <div class="w-12 h-12 rounded-xl bg-radix-900 text-white font-extrabold flex items-center justify-center text-sm flex-shrink-0">
+                        ${persona.nombre_1.charAt(0)}${persona.apellido_1.charAt(0)}
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <div class="flex items-center justify-between">
+                            <h4 class="font-bold text-slate-800 text-sm">${nombreEst}</h4>
+                            <span class="text-[10px] font-mono bg-slate-200 text-slate-700 px-2 py-0.5 rounded">ID Est: ${est.id_estudiante}</span>
+                        </div>
+                        <div class="text-xs text-slate-500 space-y-0.5">
+                            <p><i class="fa-regular fa-id-card mr-1"></i>Doc: <strong>${persona.documento_identidad}</strong></p>
+                            <p><i class="fa-solid fa-users mr-1 text-indigo-500"></i>Acudiente: <strong>${est.nombre_completo_acudiente || 'N/A'}</strong></p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function getEstudianteNombre(idEstudiante) {
+            const est = DATABASE.estudiantes.find(e => e.id_estudiante === parseInt(idEstudiante));
+            if (!est) return 'Desconocido';
+            const persona = DATABASE.personas.find(p => p.id_persona === est.id_persona);
+            return persona ? `${persona.nombre_1} ${persona.apellido_1}` : 'Desconocido';
+        }
+
+        function renderTeacherTablaNotas() {
+            const tbody = document.getElementById('doc-tabla-notas-body');
+            tbody.innerHTML = '';
+
+            DATABASE.notas.forEach((nota, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+
+                const isAprobado = parseFloat(nota.total) >= 3.0;
+
+                // Crear options para el selector de estudiante
+                let estudianteOptions = '';
+                DATABASE.estudiantes.forEach(est => {
+                    const p = DATABASE.personas.find(per => per.id_persona === est.id_persona);
+                    if (p) {
+                        const selected = (est.id_estudiante === parseInt(nota.id_estudiante)) ? 'selected' : '';
+                        estudianteOptions += `<option value="${est.id_estudiante}" ${selected}>${p.nombre_1} ${p.apellido_1}</option>`;
+                    }
+                });
+
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-mono text-xs text-slate-400">#${nota.id_nota}</td>
+                    <td class="py-3 px-4">
+                        <select onchange="updateNotaField(${index}, 'id_estudiante', this.value)" class="w-full bg-transparent hover:bg-white focus:bg-white border border-slate-200 rounded px-2 py-1 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                            ${estudianteOptions}
+                        </select>
+                    </td>
+                    <td class="py-3 px-4 font-semibold text-slate-800">
+                        <input type="text" value="${nota.descripcion}" onchange="updateNotaField(${index}, 'descripcion', this.value)" class="w-full bg-transparent hover:bg-white focus:bg-white border border-transparent hover:border-slate-200 px-2 py-1 rounded text-sm font-semibold">
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <input type="number" step="0.1" min="0" max="5" value="${parseFloat(nota.calficacion).toFixed(2)}" onchange="updateNotaField(${index}, 'calficacion', this.value)" class="w-20 text-center bg-slate-50 border border-slate-200 rounded-lg py-1 text-xs font-mono font-bold focus:bg-white focus:ring-2 focus:ring-radix-500">
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <input type="number" step="0.1" min="0" max="5" value="${parseFloat(nota.autoevaluacion).toFixed(2)}" onchange="updateNotaField(${index}, 'autoevaluacion', this.value)" class="w-20 text-center bg-slate-50 border border-slate-200 rounded-lg py-1 text-xs font-mono focus:bg-white focus:ring-2 focus:ring-radix-500">
+                    </td>
+                    <td class="py-3 px-3 text-center">
+                        <input type="number" step="0.1" min="0" max="5" value="${parseFloat(nota.coevalucion).toFixed(2)}" onchange="updateNotaField(${index}, 'coevalucion', this.value)" class="w-20 text-center bg-slate-50 border border-slate-200 rounded-lg py-1 text-xs font-mono focus:bg-white focus:ring-2 focus:ring-radix-500">
+                    </td>
+                    <td class="py-3 px-3 text-center font-mono font-extrabold text-slate-900">${parseFloat(nota.total).toFixed(2)}</td>
+                    <td class="py-3 px-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold ${isAprobado ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">
+                            ${isAprobado ? 'Aprobado' : 'Reprobado'}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateNotaField(index, field, value) {
+            const nota = DATABASE.notas[index];
+            if (!nota) return;
+
+            if (field === 'descripcion') {
+                nota.descripcion = value;
+            } else if (field === 'id_estudiante') {
+                nota.id_estudiante = parseInt(value);
+            } else {
+                nota[field] = parseFloat(value) || 0;
+                // Cálculo automático: 70% Nota + 15% Auto + 15% Coev
+                const c = parseFloat(nota.calficacion) || 0;
+                const a = parseFloat(nota.autoevaluacion) || 0;
+                const co = parseFloat(nota.coevalucion) || 0;
+                const totalCalculado = (c * 0.70) + (a * 0.15) + (co * 0.15);
+                
+                nota.total = parseFloat(totalCalculado.toFixed(2));
+                nota.estado = nota.total >= 3.0 ? 'Aprobado' : 'Reprobado';
+            }
+
+            saveNotasToStorage();
+            renderTeacherTablaNotas();
+        }
+
+        function openNuevaNotaModal() {
+            const selectEst = document.getElementById('modal-select-estudiante');
+            selectEst.innerHTML = '';
+            
+            DATABASE.estudiantes.forEach(est => {
+                const persona = DATABASE.personas.find(p => p.id_persona === est.id_persona);
+                if (persona) {
+                    const opt = document.createElement('option');
+                    opt.value = est.id_estudiante;
+                    opt.textContent = `${persona.nombre_1} ${persona.apellido_1} (Doc: ${persona.documento_identidad})`;
+                    selectEst.appendChild(opt);
+                }
+            });
+
+            document.getElementById('modal-input-desc').value = '';
+            document.getElementById('modal-input-nota').value = '4.0';
+            document.getElementById('modal-input-auto').value = '4.0';
+            document.getElementById('modal-input-coev').value = '4.0';
+
+            document.getElementById('modal-nueva-nota').classList.remove('hidden');
+        }
+
+        function closeNuevaNotaModal() {
+            document.getElementById('modal-nueva-nota').classList.add('hidden');
+        }
+
+        function handleGuardarNuevaNota(e) {
+            e.preventDefault();
+
+            const idEst = parseInt(document.getElementById('modal-select-estudiante').value);
+            const desc = document.getElementById('modal-input-desc').value.trim();
+            const calif = parseFloat(document.getElementById('modal-input-nota').value) || 0;
+            const auto = parseFloat(document.getElementById('modal-input-auto').value) || 0;
+            const coev = parseFloat(document.getElementById('modal-input-coev').value) || 0;
+
+            const totalCalc = parseFloat(((calif * 0.70) + (auto * 0.15) + (coev * 0.15)).toFixed(2));
+            const newId = DATABASE.notas.length > 0 ? Math.max(...DATABASE.notas.map(n => n.id_nota)) + 1 : 1;
+
+            DATABASE.notas.push({
+                id_nota: newId,
+                id_estudiante: idEst,
+                calficacion: calif,
+                autoevaluacion: auto,
+                coevalucion: coev,
+                total: totalCalc,
+                estado: totalCalc >= 3.0 ? 'Aprobado' : 'Reprobado',
+                descripcion: desc
+            });
+
+            saveNotasToStorage();
+            renderTeacherTablaNotas();
+            closeNuevaNotaModal();
+        }
+
+        function populateEstudiantesAnotacionSelect() {
+            const select = document.getElementById('anot-estudiante');
+            select.innerHTML = '';
+
+            DATABASE.estudiantes.forEach(est => {
+                const persona = DATABASE.personas.find(p => p.id_persona === est.id_persona);
+                if (persona) {
+                    const opt = document.createElement('option');
+                    opt.value = est.id_estudiante;
+                    opt.textContent = `${persona.nombre_1} ${persona.apellido_1} (Doc: ${persona.documento_identidad})`;
+                    select.appendChild(opt);
+                }
+            });
+        }
+
+        function renderTeacherAnotaciones() {
+            const container = document.getElementById('doc-anotaciones-container');
+            container.innerHTML = '';
+
+            const anotacionesDoc = currentUser.rol === 'Administrador'
+                ? DATABASE.anotaciones
+                : DATABASE.anotaciones.filter(a => a.id_docente === currentUser.id_persona);
+
+            if (anotacionesDoc.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-slate-400 text-xs">No ha registrado anotaciones disciplinarias.</div>`;
+                return;
+            }
+
+            anotacionesDoc.forEach(anot => {
+                const estRecord = DATABASE.estudiantes.find(e => e.id_estudiante === anot.id_estudiante);
+                const estPersona = estRecord ? DATABASE.personas.find(p => p.id_persona === estRecord.id_persona) : null;
+                const nombreEst = estPersona ? `${estPersona.nombre_1} ${estPersona.apellido_1}` : 'Estudiante';
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-50/80 rounded-2xl border border-slate-200 p-4 space-y-3";
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between pb-2 border-b border-slate-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-slate-800 text-sm">${nombreEst}</span>
+                            <span class="border text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-900 border-amber-200">${anot.tipo_falta}</span>
+                        </div>
+                        <span class="text-[11px] text-slate-400 font-mono">${anot.fecha_hora}</span>
+                    </div>
+
+                    <p class="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200">
+                        ${anot.descripcion_anotacion}
+                    </p>
+
+                    <div class="bg-white p-3 rounded-xl border border-slate-200 text-xs space-y-1">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-slate-500 block">Descargos / Versión del Alumno:</span>
+                            <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">${anot.estado_apelacion || 'Sin Apelación'}</span>
+                        </div>
+                        <p class="italic text-slate-700">
+                            ${anot.version_estudiante ? `"${anot.version_estudiante}"` : '<span class="text-slate-400 not-italic">El estudiante no ha redactado versión de descargos.</span>'}
+                        </p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function handleCrearAnotacion(e) {
+            e.preventDefault();
+            const idEstudiante = parseInt(document.getElementById('anot-estudiante').value);
+            const tipoFalta = document.getElementById('anot-tipo').value;
+            const desc = document.getElementById('anot-desc').value.trim();
+
+            const now = new Date();
+            const fechaHoraStr = now.toISOString().replace('T', ' ').substring(0, 19);
+            const newId = DATABASE.anotaciones.length > 0 ? Math.max(...DATABASE.anotaciones.map(a => a.id_anotacion)) + 1 : 1;
+
+            DATABASE.anotaciones.unshift({
+                id_anotacion: newId,
+                id_estudiante: idEstudiante,
+                id_docente: currentUser.id_persona,
+                fecha_hora: fechaHoraStr,
+                tipo_falta: tipoFalta,
+                descripcion_anotacion: desc,
+                version_estudiante: null,
+                estado_apelacion: 'Sin Apelación'
+            });
+
+            document.getElementById('anot-desc').value = '';
+            renderTeacherAnotaciones();
+            alert('Anotación registrada exitosamente.');
+        }
+
+        function switchTeacherTab(tab) {
+            ['cursos', 'estudiantes', 'notas', 'anotaciones'].forEach(t => {
+                const btn = document.getElementById(`doc-tab-btn-${t}`);
+                const content = document.getElementById(`doc-tab-content-${t}`);
+                if (t === tab) {
+                    btn.className = "py-4 px-2 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "py-4 px-2 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

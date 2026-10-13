@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Académica Unificada - RADIxECETP</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js CDN (Para Gráficas de Estadísticas) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        radix: {
+                            50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7', 600: '#0369a1',
+                            700: '#075985', 800: '#074e74', 900: '#0c3a53', accent: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="h-full text-slate-800 font-sans flex flex-col antialiased selection:bg-radix-500 selection:text-white">
+
+    <!-- MAIN NAVBAR HEADER -->
+    <header class="bg-radix-900 text-white sticky top-0 z-50 shadow-lg border-b border-radix-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="renderLoginView()">
+                    <div class="bg-gradient-to-tr from-radix-600 to-radix-accent p-2.5 rounded-xl shadow-md ring-2 ring-white/10">
+                        <i class="fa-solid fa-graduation-cap text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-white block">RADIx<span class="text-radix-accent">ECETP</span></span>
+                        <span id="nav-subtitle" class="text-[10px] uppercase font-semibold text-radix-100/70 tracking-wider block -mt-1">Portal Académico Unificado</span>
+                    </div>
+                </div>
+                <div id="nav-actions" class="flex items-center space-x-4"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN APPLICATION CONTAINER -->
+    <main id="main-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ========================================== -->
+        <!-- 1. VISTA DE LOGIN UNIFICADA                -->
+        <!-- ========================================== -->
+        <section id="view-login" class="space-y-8 max-w-2xl mx-auto pt-2 sm:pt-6">
+            <div class="text-center space-y-3">
+                <div class="inline-flex items-center space-x-2 bg-radix-50 text-radix-700 px-3.5 py-1.5 rounded-full text-xs font-semibold border border-radix-200 shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-radix-500"></i>
+                    <span>Sistema de Gestión Educativa Integrado</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold text-slate-900 tracking-tight">
+                    Bienvenido a RADIx<span class="text-radix-600">ECETP</span>
+                </h1>
+                <p class="text-slate-500 text-sm max-w-lg mx-auto">
+                    Ingrese con sus credenciales institucionales para acceder a su portal de Estudiante, Docente o Administrador.
+                </p>
+            </div>
+
+            <!-- Formulario Principal -->
+            <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-xl border border-slate-200/80 space-y-6">
+                
+                <!-- Desplegable / Pestaña de Usuarios Anteriores -->
+                <div class="border-b border-slate-100 pb-4">
+                    <button type="button" onclick="toggleSavedUsersMenu()" class="w-full flex items-center justify-between p-3 bg-slate-50 hover:bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 transition-all">
+                        <span class="flex items-center space-x-2">
+                            <i class="fa-solid fa-clock-rotate-left text-radix-600"></i>
+                            <span>Cuentas guardadas en este dispositivo</span>
+                        </span>
+                        <i id="saved-users-chevron" class="fa-solid fa-chevron-down text-slate-400 transition-transform"></i>
+                    </button>
+                    
+                    <div id="saved-users-dropdown" class="hidden mt-3 space-y-2 pl-1 pr-1">
+                        <!-- Las cuentas guardadas anteriormente se renderizan aquí -->
+                        <div id="saved-users-list" class="space-y-2"></div>
+                    </div>
+                </div>
+
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label for="login-user" class="block text-xs font-bold uppercase text-slate-600 mb-1.5">Documento de Identidad o Correo</label>
+                        <input type="text" id="login-user" required placeholder="ej. 1032445717 o wquintero@elpinal.edu.co" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="login-pass" class="block text-xs font-bold uppercase text-slate-600 mb-1.5">Contraseña</label>
+                        <input type="password" id="login-pass" required placeholder="••••••••" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none">
+                    </div>
+
+                    <div class="flex items-center space-x-2 text-xs text-slate-600">
+                        <input type="checkbox" id="remember-me" class="rounded border-slate-300 text-radix-600 focus:ring-radix-500" checked>
+                        <label for="remember-me">Guardar esta cuenta para iniciar sesión rápido más tarde</label>
+                    </div>
+
+                    <div id="login-alert" class="hidden p-3.5 rounded-xl text-xs font-medium bg-rose-50 border border-rose-200 text-rose-700 space-x-2 flex items-center">
+                        <i class="fa-solid fa-circle-exclamation text-rose-500 text-base"></i>
+                        <span id="login-alert-msg">Credenciales incorrectas.</span>
+                    </div>
+
+                    <button type="submit" class="w-full bg-radix-900 hover:bg-radix-800 text-white font-bold py-3.5 rounded-xl shadow-lg transition-all text-sm flex items-center justify-center space-x-2">
+                        <span>Ingresar al Sistema</span>
+                        <i class="fa-solid fa-right-to-bracket text-xs"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 2. VISTA PORTAL ESTUDIANTE                 -->
+        <!-- ========================================== -->
+        <section id="view-student-portal" class="hidden space-y-6">
+            <div class="bg-gradient-to-r from-radix-900 via-radix-800 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-radix-700/50">
+                <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    <div class="flex items-center space-x-4 sm:space-x-6">
+                        <div id="est-avatar" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-radix-600 to-radix-accent text-white flex items-center justify-center text-2xl sm:text-3xl font-extrabold shadow-lg border-2 border-white/20">--</div>
+                        <div class="space-y-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="bg-radix-accent/20 border border-radix-accent/40 text-radix-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Portal Estudiantil</span>
+                                <span id="est-badge-grupo" class="bg-white/10 text-radix-100 text-[10px] font-bold px-2 py-0.5 rounded-md">Grupo: --</span>
+                            </div>
+                            <h2 id="est-nombre-header" class="text-xl sm:text-2xl font-extrabold tracking-tight text-white">--- ---</h2>
+                            <div class="flex flex-wrap gap-3 text-xs text-slate-300 font-medium pt-1">
+                                <span id="est-correo-header"><i class="fa-regular fa-envelope text-radix-200 mr-1"></i>--</span>
+                                <span id="est-doc-header"><i class="fa-regular fa-id-card text-radix-200 mr-1"></i>Doc: --</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="handleLogout()" class="px-5 py-2.5 bg-rose-500/20 text-rose-200 hover:bg-rose-500/30 border border-rose-400/30 font-semibold text-xs rounded-xl transition-all">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <!-- Student Tabs -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm px-4 sm:px-6 flex space-x-2 sm:space-x-6">
+                <button id="est-tab-btn-perfil" onclick="switchStudentTab('perfil')" class="py-4 px-2 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm">Información Personal</button>
+                <button id="est-tab-btn-notas" onclick="switchStudentTab('notas')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 font-semibold text-xs sm:text-sm">Mis Calificaciones</button>
+                <button id="est-tab-btn-anotaciones" onclick="switchStudentTab('anotaciones')" class="py-4 px-2 border-b-2 border-transparent text-slate-500 font-semibold text-xs sm:text-sm">Observador / Descargos</button>
+            </div>
+
+            <!-- TAB ESTUDIANTE: PERFIL -->
+            <div id="est-tab-content-perfil" class="bg-white rounded-2xl border border-slate-200/80 p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-2 text-xs">
+                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2">Datos del Estudiante</h3>
+                    <p class="text-slate-500">Nombre: <strong id="est-profile-nombre" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Documento: <strong id="est-profile-doc" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Correo: <strong id="est-profile-correo" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Género: <strong id="est-profile-genero" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Etnia: <strong id="est-profile-etnia" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Población: <strong id="est-profile-poblacion" class="text-slate-800">--</strong></p>
+                </div>
+                <div class="space-y-2 text-xs bg-slate-50 p-4 rounded-xl">
+                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2">Información del Acudiente</h3>
+                    <p class="text-slate-500">Nombre: <strong id="est-profile-acudiente" class="text-slate-800">--</strong></p>
+                    <p class="text-slate-500">Parentesco: <strong id="est-profile-parentezco" class="text-slate-800">--</strong></p>
+                </div>
+            </div>
+
+            <!-- TAB ESTUDIANTE: NOTAS -->
+            <div id="est-tab-content-notas" class="hidden bg-white rounded-2xl border border-slate-200/80 p-6 overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b">
+                            <th class="py-3 px-4">Descripción</th>
+                            <th class="py-3 px-3 text-center">Nota (70%)</th>
+                            <th class="py-3 px-3 text-center">Auto (15%)</th>
+                            <th class="py-3 px-3 text-center">Coev (15%)</th>
+                            <th class="py-3 px-3 text-center font-bold">Definitiva</th>
+                            <th class="py-3 px-4 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="est-tabla-notas-body" class="divide-y divide-slate-100"></tbody>
+                </table>
+            </div>
+
+            <!-- TAB ESTUDIANTE: OBSERVAODOR Y DESCARGOS -->
+            <div id="est-tab-content-anotaciones" class="hidden bg-white rounded-2xl border border-slate-200/80 p-6 space-y-4">
+                <h3 class="font-bold text-slate-800 text-base">Observador Disciplinario</h3>
+                <div id="est-anotaciones-container" class="space-y-4"></div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 3. VISTA PORTAL DOCENTE                    -->
+        <!-- ========================================== -->
+        <section id="view-teacher-portal" class="hidden space-y-6">
+            <div class="bg-gradient-to-r from-radix-900 via-radix-800 to-slate-900 rounded-3xl p-6 text-white shadow-xl flex justify-between items-center">
+                <div>
+                    <span class="bg-radix-accent/20 border border-radix-accent/40 text-radix-100 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Módulo Gestión Docente</span>
+                    <h2 id="doc-nombre-header" class="text-2xl font-extrabold">--</h2>
+                </div>
+                <button onclick="handleLogout()" class="px-4 py-2 bg-rose-500/20 text-rose-200 border border-rose-400/30 text-xs rounded-xl">Cerrar Sesión</button>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm px-4 flex space-x-4">
+                <button id="doc-tab-btn-cursos" onclick="switchTeacherTab('cursos')" class="py-4 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm">Mis Grados</button>
+                <button id="doc-tab-btn-notas" onclick="switchTeacherTab('notas')" class="py-4 border-b-2 border-transparent text-slate-500 font-semibold text-xs sm:text-sm">Gestión de Notas</button>
+                <button id="doc-tab-btn-anotaciones" onclick="switchTeacherTab('anotaciones')" class="py-4 border-b-2 border-transparent text-slate-500 font-semibold text-xs sm:text-sm">Observador Disciplinario</button>
+            </div>
+
+            <!-- TAB DOCENTE: CURSOS -->
+            <div id="doc-tab-content-cursos" class="bg-white rounded-2xl p-6 border border-slate-200">
+                <div id="doc-asignaciones-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- TAB DOCENTE: PLANILLA NOTAS -->
+            <div id="doc-tab-content-notas" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800">Planilla de Calificaciones</h3>
+                    <button onclick="openNuevaNotaModal()" class="px-3 py-2 bg-emerald-600 text-white font-semibold text-xs rounded-xl">+ Agregar Actividad</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b">
+                                <th class="py-3 px-4">Descripción</th>
+                                <th class="py-3 px-3 text-center">Nota (70%)</th>
+                                <th class="py-3 px-3 text-center">Auto (15%)</th>
+                                <th class="py-3 px-3 text-center">Coev (15%)</th>
+                                <th class="py-3 px-3 text-center font-bold">Definitiva</th>
+                                <th class="py-3 px-4 text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doc-tabla-notas-body" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TAB DOCENTE: ANOTACIONES -->
+            <div id="doc-tab-content-anotaciones" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2">Crear Anotación</h3>
+                    <form onsubmit="handleCrearAnotacion(event)" class="space-y-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Estudiante</label>
+                            <select id="anot-estudiante" required class="w-full p-2 bg-slate-50 border rounded-xl text-xs"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Tipo de Falta</label>
+                            <select id="anot-tipo" required class="w-full p-2 bg-slate-50 border rounded-xl text-xs">
+                                <option value="Tipo 1 - Leve">Tipo 1 - Leve</option>
+                                <option value="Tipo 2 - Grave">Tipo 2 - Grave</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">Descripción</label>
+                            <textarea id="anot-desc" required rows="3" class="w-full p-2 bg-slate-50 border rounded-xl text-xs"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-amber-600 text-white font-bold py-2 rounded-xl text-xs">Registrar en Observador</button>
+                    </form>
+                </div>
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                    <h3 class="font-bold text-slate-800 text-sm border-b pb-2">Historial y Descargos de Alumnos</h3>
+                    <div id="doc-anotaciones-container" class="space-y-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. VISTA PORTAL ADMINISTRADOR (ESTADÍSTICAS)-->
+        <!-- ========================================== -->
+        <section id="view-admin-portal" class="hidden space-y-6">
+            <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-3xl p-6 text-white shadow-xl flex justify-between items-center">
+                <div>
+                    <span class="bg-purple-400/20 border border-purple-400/40 text-purple-200 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">Panel de Control General</span>
+                    <h2 class="text-2xl font-extrabold">Módulo Administrativo & Estadísticas</h2>
+                </div>
+                <button onclick="handleLogout()" class="px-4 py-2 bg-rose-500/20 text-rose-200 border border-rose-400/30 text-xs rounded-xl">Cerrar Sesión</button>
+            </div>
+
+            <!-- KPIs -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Estudiantes</span>
+                    <h3 id="admin-stat-total-est" class="text-2xl font-extrabold text-slate-800">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Aprobados</span>
+                    <h3 id="admin-stat-ganadores" class="text-2xl font-extrabold text-emerald-600">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Repitentes/Riesgo</span>
+                    <h3 id="admin-stat-repitentes" class="text-2xl font-extrabold text-rose-600">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Docentes</span>
+                    <h3 id="admin-stat-docentes" class="text-2xl font-extrabold text-indigo-600">0</h3>
+                </div>
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <span class="text-xs font-bold text-slate-400 uppercase">Sedes Activas</span>
+                    <h3 id="admin-stat-sedes" class="text-2xl font-extrabold text-amber-600">2</h3>
+                </div>
+            </div>
+
+            <!-- Gráficas Estadísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider text-center">Distribución por Género</h4>
+                    <div class="h-48 relative"><canvas id="chartGenero"></canvas></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider text-center">Rendimiento Académico</h4>
+                    <div class="h-48 relative"><canvas id="chartRendimiento"></canvas></div>
+                </div>
+
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2">
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wider text-center">Estudiantes por Sede</h4>
+                    <div class="h-48 relative"><canvas id="chartSede"></canvas></div>
+                </div>
+            </div>
+
+            <!-- Tabla Resumen de Carga Docente -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 space-y-4 shadow-sm">
+                <h3 class="font-bold text-slate-800 text-base">Carga Académica Institucional</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-slate-50 text-[11px] uppercase font-bold text-slate-500 border-b">
+                                <th class="py-3 px-4">Docente</th>
+                                <th class="py-3 px-4">Documento</th>
+                                <th class="py-3 px-4">Sede</th>
+                                <th class="py-3 px-4">Dirección de Grupo</th>
+                                <th class="py-3 px-4">Materias</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tabla-carga" class="divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            RADIxECETP &copy; 2026 • Plataforma Educativa Integrada Unificada
+        </div>
+    </footer>
+
+    <!-- LÓGICA Y BASE DE DATOS UNIFICADA -->
+    <script>
+        const STORAGE_KEY_SAVED_ACCOUNTS = 'radix_saved_accounts_v1';
+
+        // BASE DE DATOS UNIFICADA
+        const DATABASE = {
+            personas: [
+                { id_persona: 1, documento_identidad: 1032445717, nombre_1: 'Imary', nombre_2: null, apellido_1: 'Mejía', apellido_2: 'Betancur', correo_electronico: 'imary.mejia@gmail.com', telefono: '3022445717', genero: 'Femenino', etnia: 'Ninguna', poblacion: 'Ninguna', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 2, documento_identidad: 10010019, nombre_1: 'Alejandro', nombre_2: null, apellido_1: 'Gómez', apellido_2: 'Restrepo', correo_electronico: 'agomez@gmail.com', telefono: '3110001122', genero: 'Masculino', etnia: 'Afrocolombiano', poblacion: 'Desplazado', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 3, documento_identidad: 10010009, nombre_1: 'Wilson', nombre_2: 'de Jesús', apellido_1: 'Quintero', apellido_2: null, correo_electronico: 'wquintero@elpinal.edu.co', telefono: '3147892011', genero: 'Masculino', etnia: 'Ninguna', poblacion: 'Ninguna', rol: 'Docente', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 4, documento_identidad: 10010001, nombre_1: 'Admin', nombre_2: null, apellido_1: 'General', apellido_2: null, correo_electronico: 'admin@radix.edu.co', telefono: '3000000000', genero: 'Masculino', etnia: 'Ninguna', poblacion: 'Ninguna', rol: 'Administrador', contraseña: 'admin2026', estado: 'Activo' },
+                { id_persona: 5, documento_identidad: 10010020, nombre_1: 'Camila', nombre_2: null, apellido_1: 'Torres', apellido_2: 'Ríos', correo_electronico: 'ctorres@gmail.com', telefono: '3123456789', genero: 'Femenino', etnia: 'Indígena', poblacion: 'Víctima del conflicto', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' }
+            ],
+            estudiantes: [
+                { id_estudiante: 1, id_persona: 1, id_grupo: 1, sede: 'Principal', es_repitente: false, nombre_completo_acudiente: 'Maria Elena Betancur', parentezco_acudiente: 'Madre' },
+                { id_estudiante: 2, id_persona: 2, id_grupo: 1, sede: 'Principal', es_repitente: true, nombre_completo_acudiente: 'Carlos Gómez', parentezco_acudiente: 'Padre' },
+                { id_estudiante: 3, id_persona: 5, id_grupo: 2, sede: 'Escuelita', es_repitente: false, nombre_completo_acudiente: 'Lucía Ríos', parentezco_acudiente: 'Madre' }
+            ],
+            grupos: [
+                { id_grupo: 1, nombre_grupo: '11-1', jornada: 'Mañana', grado: 11 },
+                { id_grupo: 2, nombre_grupo: '10-1', jornada: 'Mañana', grado: 10 }
+            ],
+            materias: [
+                { id_materia: 1, nombre_materia: 'Sistemas y Redes', intensidad_horaria: 4 },
+                { id_materia: 2, nombre_materia: 'Mantenimiento de Cómputo', intensidad_horaria: 3 }
+            ],
+            notas: [
+                { id_nota: 1, id_estudiante: 1, calficacion: 4.50, autoevaluacion: 4.00, coevalucion: 4.50, total: 4.42, estado: 'Aprobado', descripcion: 'Taller 1: Redes' },
+                { id_nota: 2, id_estudiante: 2, calficacion: 2.00, autoevaluacion: 2.50, coevalucion: 2.00, total: 2.07, estado: 'Reprobado', descripcion: 'Evaluación Parcial' },
+                { id_nota: 3, id_estudiante: 3, calficacion: 4.80, autoevaluacion: 4.50, coevalucion: 5.00, total: 4.78, estado: 'Aprobado', descripcion: 'Proyecto Integrador' }
+            ],
+            anotaciones: [
+                { id_anotacion: 1, id_estudiante: 1, id_docente: 3, fecha_hora: '2026-08-05 09:15', tipo_falta: 'Tipo 1 - Leve', descripcion_anotacion: 'Uso de móvil en clase', version_estudiante: 'Estaba leyendo la guía en PDF', estado_apelacion: 'En Revisión' }
+            ],
+            cargaDocentes: [
+                { nombre: "Wilson Quintero", documento: "10010009", sede: "Principal", es_director: "Sí (11-1)", materias: ["Sistemas y Redes", "Mantenimiento"] },
+                { nombre: "María Fernanda Gómez", documento: "43987654", sede: "Escuelita", es_director: "Sí (10-1)", materias: ["Lengua Castellana"] }
+            ]
+        };
+
+        let currentUser = null;
+        let chartGeneroInst, chartRendimientoInst, chartSedeInst;
+
+        // La aplicación siempre inicia en pantalla de login vacía (Default)
+        window.onload = function() { 
+            renderLoginView(); 
+            renderSavedUsersList();
+        };
+
+        function toggleSavedUsersMenu() {
+            const dropdown = document.getElementById('saved-users-dropdown');
+            const chevron = document.getElementById('saved-users-chevron');
+            const isHidden = dropdown.classList.contains('hidden');
+            
+            if (isHidden) {
+                dropdown.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                dropdown.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function getSavedAccounts() {
+            try {
+                return JSON.parse(localStorage.getItem(STORAGE_KEY_SAVED_ACCOUNTS)) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveAccountToStorage(userObj) {
+            let saved = getSavedAccounts();
+            // Filtrar duplicados por ID de persona
+            saved = saved.filter(acc => acc.id_persona !== userObj.id_persona);
+            saved.push({
+                id_persona: userObj.id_persona,
+                nombre: `${userObj.nombre_1} ${userObj.apellido_1}`,
+                loginInput: userObj.documento_identidad.toString(),
+                pass: userObj.contraseña,
+                rol: userObj.rol
+            });
+            localStorage.setItem(STORAGE_KEY_SAVED_ACCOUNTS, JSON.stringify(saved));
+            renderSavedUsersList();
+        }
+
+        function removeSavedAccount(idPersona, event) {
+            if (event) event.stopPropagation();
+            let saved = getSavedAccounts().filter(acc => acc.id_persona !== idPersona);
+            localStorage.setItem(STORAGE_KEY_SAVED_ACCOUNTS, JSON.stringify(saved));
+            renderSavedUsersList();
+        }
+
+        function renderSavedUsersList() {
+            const listContainer = document.getElementById('saved-users-list');
+            const saved = getSavedAccounts();
+
+            if (saved.length === 0) {
+                listContainer.innerHTML = `<p class="text-[11px] text-slate-400 italic py-1 text-center">No hay cuentas guardadas previamente.</p>`;
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            saved.forEach(acc => {
+                const badgeColor = acc.rol === 'Estudiante' ? 'bg-sky-100 text-sky-800' : (acc.rol === 'Docente' ? 'bg-emerald-100 text-emerald-800' : 'bg-purple-100 text-purple-800');
+                
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:border-radix-500 hover:bg-radix-50/30 transition-all cursor-pointer";
+                div.onclick = () => fillSavedCredentials(acc.loginInput, acc.pass);
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div>
+                            <span class="font-bold text-slate-800 text-xs block">${acc.nombre}</span>
+                            <span class="text-[10px] ${badgeColor} font-semibold px-1.5 py-0.5 rounded">${acc.rol}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-[10px] font-mono text-slate-400">••••••••</span>
+                        <button onclick="removeSavedAccount(${acc.id_persona}, event)" title="Eliminar de esta lista" class="text-slate-300 hover:text-rose-500 p-1">
+                            <i class="fa-solid fa-xmark text-xs"></i>
+                        </button>
+                    </div>
+                `;
+                listContainer.appendChild(div);
+            });
+        }
+
+        function fillSavedCredentials(userInput, pass) {
+            document.getElementById('login-user').value = userInput;
+            document.getElementById('login-pass').value = pass;
+            document.getElementById('saved-users-dropdown').classList.add('hidden');
+            document.getElementById('saved-users-chevron').style.transform = 'rotate(0deg)';
+        }
+
+        function handleLogin(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const userInput = document.getElementById('login-user').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
+            const rememberMe = document.getElementById('remember-me').checked;
+            const alertBox = document.getElementById('login-alert');
+
+            const foundUser = DATABASE.personas.find(p => 
+                (p.correo_electronico.toLowerCase() === userInput.toLowerCase() || p.documento_identidad.toString() === userInput) &&
+                p.contraseña === passInput
+            );
+
+            if (!foundUser) {
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            if (rememberMe) {
+                saveAccountToStorage(foundUser);
+            }
+
+            currentUser = foundUser;
+            alertBox.classList.add('hidden');
+            renderRolePortal();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            renderLoginView();
+        }
+
+        function renderLoginView() {
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('login-alert').classList.add('hidden');
+            
+            document.getElementById('view-login').classList.remove('hidden');
+            document.getElementById('view-student-portal').classList.add('hidden');
+            document.getElementById('view-teacher-portal').classList.add('hidden');
+            document.getElementById('view-admin-portal').classList.add('hidden');
+        }
+
+        function renderRolePortal() {
+            if (!currentUser) return;
+            document.getElementById('view-login').classList.add('hidden');
+
+            const nombreCompleto = `${currentUser.nombre_1} ${currentUser.apellido_1}`;
+            const iniciales = `${currentUser.nombre_1.charAt(0)}${currentUser.apellido_1.charAt(0)}`;
+
+            if (currentUser.rol === 'Estudiante') {
+                document.getElementById('view-student-portal').classList.remove('hidden');
+                document.getElementById('view-teacher-portal').classList.add('hidden');
+                document.getElementById('view-admin-portal').classList.add('hidden');
+                renderStudentPortal(nombreCompleto, iniciales);
+            } else if (currentUser.rol === 'Docente') {
+                document.getElementById('view-teacher-portal').classList.remove('hidden');
+                document.getElementById('view-student-portal').classList.add('hidden');
+                document.getElementById('view-admin-portal').classList.add('hidden');
+                renderTeacherPortal(nombreCompleto, iniciales);
+            } else if (currentUser.rol === 'Administrador') {
+                document.getElementById('view-admin-portal').classList.remove('hidden');
+                document.getElementById('view-student-portal').classList.add('hidden');
+                document.getElementById('view-teacher-portal').classList.add('hidden');
+                renderAdminPortal();
+            }
+        }
+
+        /* LÓGICA ESTUDIANTE */
+        function renderStudentPortal(nombreCompleto, iniciales) {
+            const estudianteData = DATABASE.estudiantes.find(e => e.id_persona === currentUser.id_persona) || DATABASE.estudiantes[0];
+            document.getElementById('est-avatar').textContent = iniciales;
+            document.getElementById('est-nombre-header').textContent = nombreCompleto;
+            document.getElementById('est-profile-nombre').textContent = nombreCompleto;
+            document.getElementById('est-profile-doc').textContent = currentUser.documento_identidad;
+            document.getElementById('est-profile-correo').textContent = currentUser.correo_electronico;
+            document.getElementById('est-profile-genero').textContent = currentUser.genero;
+            document.getElementById('est-profile-etnia').textContent = currentUser.etnia || 'Ninguna';
+            document.getElementById('est-profile-poblacion').textContent = currentUser.poblacion || 'Ninguna';
+            document.getElementById('est-profile-acudiente').textContent = estudianteData.nombre_completo_acudiente;
+            document.getElementById('est-profile-parentezco').textContent = estudianteData.parentezco_acudiente;
+
+            renderStudentNotas(estudianteData.id_estudiante);
+            renderStudentAnotaciones(estudianteData.id_estudiante);
+        }
+
+        function renderStudentNotas(idEstudiante) {
+            const tbody = document.getElementById('est-tabla-notas-body');
+            tbody.innerHTML = '';
+            const notasEst = DATABASE.notas.filter(n => n.id_estudiante === idEstudiante);
+
+            notasEst.forEach(nota => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-semibold">${nota.descripcion}</td>
+                    <td class="py-3 px-3 text-center">${nota.calficacion.toFixed(2)}</td>
+                    <td class="py-3 px-3 text-center">${nota.autoevaluacion.toFixed(2)}</td>
+                    <td class="py-3 px-3 text-center">${nota.coevalucion.toFixed(2)}</td>
+                    <td class="py-3 px-3 text-center font-bold">${nota.total.toFixed(2)}</td>
+                    <td class="py-3 px-4 text-center"><span class="px-2 py-1 rounded text-xs ${nota.total >= 3.0 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${nota.estado}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderStudentAnotaciones(idEstudiante) {
+            const container = document.getElementById('est-anotaciones-container');
+            container.innerHTML = '';
+            const anotaciones = DATABASE.anotaciones.filter(a => a.id_estudiante === idEstudiante);
+
+            if (anotaciones.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic">No registra faltas ni anotaciones en el observador.</p>`;
+                return;
+            }
+
+            anotaciones.forEach(anot => {
+                const div = document.createElement('div');
+                div.className = "p-4 bg-slate-50 border rounded-xl space-y-2 text-xs";
+                div.innerHTML = `
+                    <div class="flex justify-between font-bold">
+                        <span>Falta: ${anot.tipo_falta}</span>
+                        <span class="text-slate-400">${anot.fecha_hora}</span>
+                    </div>
+                    <p class="bg-white p-2 border rounded">${anot.descripcion_anotacion}</p>
+                    <div>
+                        <strong class="block mb-1">Descargos del Estudiante:</strong>
+                        ${anot.version_estudiante ? `<p class="italic bg-slate-100 p-2 rounded">"${anot.version_estudiante}"</p>` : `
+                            <textarea id="descargo-${anot.id_anotacion}" placeholder="Escriba su descargo..." class="w-full p-2 border rounded mb-1"></textarea>
+                            <button onclick="guardarDescargo(${anot.id_anotacion})" class="px-3 py-1 bg-radix-600 text-white rounded font-bold">Enviar Descargo</button>
+                        `}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function guardarDescargo(idAnotacion) {
+            const val = document.getElementById(`descargo-${idAnotacion}`).value.trim();
+            if (!val) return;
+            const anot = DATABASE.anotaciones.find(a => a.id_anotacion === idAnotacion);
+            if (anot) {
+                anot.version_estudiante = val;
+                anot.estado_apelacion = 'En Revisión';
+                renderStudentAnotaciones(anot.id_estudiante);
+            }
+        }
+
+        function switchStudentTab(tab) {
+            ['perfil', 'notas', 'anotaciones'].forEach(t => {
+                document.getElementById(`est-tab-content-${t}`).classList.toggle('hidden', t !== tab);
+            });
+        }
+
+        /* LÓGICA DOCENTE */
+        function renderTeacherPortal(nombreCompleto, iniciales) {
+            document.getElementById('doc-nombre-header').textContent = nombreCompleto;
+            renderTeacherCursos();
+            renderTeacherNotas();
+            populateEstudiantesAnotacionSelect();
+            renderTeacherAnotaciones();
+        }
+
+        function renderTeacherCursos() {
+            const container = document.getElementById('doc-asignaciones-list');
+            container.innerHTML = `
+                <div class="p-4 bg-slate-50 border rounded-xl">
+                    <span class="text-xs font-bold text-radix-600">Grupo 11-1</span>
+                    <h4 class="font-extrabold text-slate-800">Sistemas y Redes</h4>
+                    <p class="text-xs text-slate-500">Intensidad: 4 hrs/semana</p>
+                </div>
+            `;
+        }
+
+        function renderTeacherNotas() {
+            const tbody = document.getElementById('doc-tabla-notas-body');
+            tbody.innerHTML = '';
+            DATABASE.notas.forEach((nota, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2 px-4"><input type="text" value="${nota.descripcion}" onchange="updateNota(${idx}, 'descripcion', this.value)" class="w-full border p-1 rounded text-xs"></td>
+                    <td class="py-2 px-2 text-center"><input type="number" step="0.1" value="${nota.calficacion}" onchange="updateNota(${idx}, 'calficacion', this.value)" class="w-16 border p-1 rounded text-xs text-center"></td>
+                    <td class="py-2 px-2 text-center"><input type="number" step="0.1" value="${nota.autoevaluacion}" onchange="updateNota(${idx}, 'autoevaluacion', this.value)" class="w-16 border p-1 rounded text-xs text-center"></td>
+                    <td class="py-2 px-2 text-center"><input type="number" step="0.1" value="${nota.coevalucion}" onchange="updateNota(${idx}, 'coevalucion', this.value)" class="w-16 border p-1 rounded text-xs text-center"></td>
+                    <td class="py-2 px-2 text-center font-bold">${nota.total.toFixed(2)}</td>
+                    <td class="py-2 px-4 text-center"><button onclick="deleteNota(${idx})" class="text-rose-500"><i class="fa-solid fa-trash"></i></button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateNota(index, field, val) {
+            const nota = DATABASE.notas[index];
+            if (field === 'descripcion') nota.descripcion = val;
+            else {
+                nota[field] = parseFloat(val) || 0;
+                nota.total = (nota.calficacion * 0.7) + (nota.autoevaluacion * 0.15) + (nota.coevalucion * 0.15);
+                nota.estado = nota.total >= 3.0 ? 'Aprobado' : 'Reprobado';
+            }
+            renderTeacherNotas();
+        }
+
+        function openNuevaNotaModal() {
+            const desc = prompt("Descripción de la actividad:");
+            if (!desc) return;
+            DATABASE.notas.push({ id_nota: Date.now(), id_estudiante: 1, calficacion: 4.0, autoevaluacion: 4.0, coevalucion: 4.0, total: 4.0, estado: 'Aprobado', descripcion: desc });
+            renderTeacherNotas();
+        }
+
+        function deleteNota(idx) {
+            DATABASE.notas.splice(idx, 1);
+            renderTeacherNotas();
+        }
+
+        function populateEstudiantesAnotacionSelect() {
+            const select = document.getElementById('anot-estudiante');
+            select.innerHTML = '';
+            DATABASE.estudiantes.forEach(est => {
+                const persona = DATABASE.personas.find(p => p.id_persona === est.id_persona);
+                if (persona) select.innerHTML += `<option value="${est.id_estudiante}">${persona.nombre_1} ${persona.apellido_1}</option>`;
+            });
+        }
+
+        function renderTeacherAnotaciones() {
+            const container = document.getElementById('doc-anotaciones-container');
+            container.innerHTML = '';
+            DATABASE.anotaciones.forEach(anot => {
+                const est = DATABASE.estudiantes.find(e => e.id_estudiante === anot.id_estudiante);
+                const persona = est ? DATABASE.personas.find(p => p.id_persona === est.id_persona) : null;
+                container.innerHTML += `
+                    <div class="p-4 bg-slate-50 border rounded-xl space-y-2 text-xs">
+                        <div class="flex justify-between font-bold">
+                            <span>${persona ? persona.nombre_1 + ' ' + persona.apellido_1 : 'Estudiante'} - ${anot.tipo_falta}</span>
+                            <span class="text-slate-400">${anot.fecha_hora}</span>
+                        </div>
+                        <p class="bg-white p-2 border rounded">${anot.descripcion_anotacion}</p>
+                        <p class="italic text-slate-600 bg-slate-100 p-2 rounded">Descargo: ${anot.version_estudiante || 'Sin descargo ingresado.'}</p>
+                    </div>
+                `;
+            });
+        }
+
+        function handleCrearAnotacion(e) {
+            e.preventDefault();
+            DATABASE.anotaciones.unshift({
+                id_anotacion: Date.now(),
+                id_estudiante: parseInt(document.getElementById('anot-estudiante').value),
+                id_docente: currentUser.id_persona,
+                fecha_hora: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                tipo_falta: document.getElementById('anot-tipo').value,
+                descripcion_anotacion: document.getElementById('anot-desc').value,
+                version_estudiante: null,
+                estado_apelacion: 'Sin Apelación'
+            });
+            document.getElementById('anot-desc').value = '';
+            renderTeacherAnotaciones();
+        }
+
+        function switchTeacherTab(tab) {
+            ['cursos', 'notas', 'anotaciones'].forEach(t => {
+                document.getElementById(`doc-tab-content-${t}`).classList.toggle('hidden', t !== tab);
+            });
+        }
+
+        /* LÓGICA ADMINISTRADOR & ESTADÍSTICAS */
+        function renderAdminPortal() {
+            const totalEst = DATABASE.estudiantes.length;
+            const mascs = DATABASE.personas.filter(p => p.rol === 'Estudiante' && p.genero === 'Masculino').length;
+            const fems = DATABASE.personas.filter(p => p.rol === 'Estudiante' && p.genero === 'Femenino').length;
+
+            const repitentes = DATABASE.estudiantes.filter(e => e.es_repitente).length;
+            const ganadores = DATABASE.notas.filter(n => n.estado === 'Aprobado').length;
+            const docentesCount = DATABASE.personas.filter(p => p.rol === 'Docente').length;
+
+            const principalCount = DATABASE.estudiantes.filter(e => e.sede === 'Principal').length;
+            const escuelitaCount = DATABASE.estudiantes.filter(e => e.sede === 'Escuelita').length;
+
+            document.getElementById('admin-stat-total-est').textContent = totalEst;
+            document.getElementById('admin-stat-ganadores').textContent = ganadores;
+            document.getElementById('admin-stat-repitentes').textContent = repitentes;
+            document.getElementById('admin-stat-docentes').textContent = docentesCount;
+
+            const tbody = document.getElementById('admin-tabla-carga');
+            tbody.innerHTML = '';
+            DATABASE.cargaDocentes.forEach(doc => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-3 px-4 font-bold text-slate-800">${doc.nombre}</td>
+                        <td class="py-3 px-4">${doc.documento}</td>
+                        <td class="py-3 px-4"><span class="px-2 py-1 bg-slate-100 rounded text-xs">${doc.sede}</span></td>
+                        <td class="py-3 px-4 font-semibold text-emerald-700">${doc.es_director}</td>
+                        <td class="py-3 px-4">${doc.materias.join(', ')}</td>
+                    </tr>
+                `;
+            });
+
+            renderCharts(mascs, fems, ganadores, repitentes, principalCount, escuelitaCount);
+        }
+
+        function renderCharts(mascs, fems, ganadores, repitentes, principal, escuelita) {
+            if (chartGeneroInst) chartGeneroInst.destroy();
+            if (chartRendimientoInst) chartRendimientoInst.destroy();
+            if (chartSedeInst) chartSedeInst.destroy();
+
+            const ctx1 = document.getElementById('chartGenero').getContext('2d');
+            chartGeneroInst = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Masculino', 'Femenino'],
+                    datasets: [{ data: [mascs, fems], backgroundColor: ['#0284c7', '#ec4899'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            const ctx2 = document.getElementById('chartRendimiento').getContext('2d');
+            chartRendimientoInst = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Aprobados / Ganadores', 'Repitentes / Riesgo'],
+                    datasets: [{ label: 'Estudiantes', data: [ganadores, repitentes], backgroundColor: ['#10b981', '#f43f5e'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            const ctx3 = document.getElementById('chartSede').getContext('2d');
+            chartSedeInst = new Chart(ctx3, {
+                type: 'pie',
+                data: {
+                    labels: ['Sede Principal', 'Sede Escuelita'],
+                    datasets: [{ data: [principal, escuelita], backgroundColor: ['#6366f1', '#f59e0b'] }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+    </script>
+</body>
+</html>

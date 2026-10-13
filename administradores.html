@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RADIxECETP - Carga Académica de Docentes</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #0d9488;
+            --bg-gray: #f8fafc;
+            --card-border: #e2e8f0;
+            --text-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .user-profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .user-details .admin-name {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        .user-details .admin-role {
+            font-size: 0.78rem;
+            color: #64748b;
+        }
+
+        .btn-logout {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-left: 8px;
+            padding: 4px;
+        }
+
+        .btn-logout:hover {
+            color: #b91c1c;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .kpi-card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .kpi-card i {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+        }
+
+        .kpi-info h3 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .kpi-info p {
+            margin: 2px 0 0 0;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .controls-section {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid var(--card-border);
+        }
+
+        select, input {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .table-container {
+            background: #fff;
+            border-radius: 10px;
+            overflow-x: auto;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-principal { background: #dbeafe; color: #1e40af; }
+        .badge-escuelita { background: #fef3c7; color: #92400e; }
+        .badge-director { background: #dcfce7; color: #166534; }
+        .badge-materia { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; margin: 2px; }
+        
+        .materia-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1 style="margin: 0; color: var(--primary-color);">Carga Académica Docente</h1>
+            <small style="color: #64748b;">Sistema de Gestión Institucional RADIxECETP</small>
+        </div>
+        
+        <!-- IDENTIFICACIÓN DEL ADMINISTRADOR EN SESIÓN -->
+        <div class="user-profile-badge">
+            <div class="user-avatar" id="admin-iniciales">A</div>
+            <div class="user-details">
+                <span class="admin-name" id="admin-nombre">Cargando...</span>
+                <span class="admin-role" id="admin-email">Administrador de Sistema</span>
+            </div>
+            <button class="btn-logout" title="Cerrar Sesión" onclick="cerrarSesion()">
+                <i class="bi bi-box-arrow-right"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- METRICAS / KPIS -->
+    <section class="kpi-grid">
+        <div class="kpi-card">
+            <i class="bi bi-person-video3"></i>
+            <div class="kpi-info">
+                <h3 id="total-profesores">0</h3>
+                <p>Total Docentes</p>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <i class="bi bi-building"></i>
+            <div class="kpi-info">
+                <h3 id="total-principal">0</h3>
+                <p>Sede Principal</p>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <i class="bi bi-house-door"></i>
+            <div class="kpi-info">
+                <h3 id="total-escuelita">0</h3>
+                <p>Sede Escuelita</p>
+            </div>
+        </div>
+        <div class="kpi-card">
+            <i class="bi bi-star"></i>
+            <div class="kpi-info">
+                <h3 id="total-directores">0</h3>
+                <p>Directores de Grupo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FILTROS Y BÚSQUEDA -->
+    <section class="controls-section">
+        <label><strong>Filtrar Carga:</strong></label>
+        <input type="text" id="input-buscar" placeholder="Buscar por profesor o materia..." onkeyup="filtrarTabla()">
+        
+        <select id="select-sede" onchange="filtrarTabla()">
+            <option value="">Todas las Sedes</option>
+            <option value="Principal">Sede Principal</option>
+            <option value="Escuelita">Sede Escuelita</option>
+        </select>
+
+        <select id="select-director" onchange="filtrarTabla()">
+            <option value="">Todos los Roles</option>
+            <option value="Si">Solo Directores de Grupo</option>
+            <option value="No">Sin Dirección de Grupo</option>
+        </select>
+    </section>
+
+    <!-- TABLA DE CARGA ACADÉMICA -->
+    <section class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Docente</th>
+                    <th>Documento</th>
+                    <th>Sede</th>
+                    <th>Dirección de Grupo</th>
+                    <th>Grupos Asignados</th>
+                    <th>Materias / Asignaturas</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-carga">
+                <!-- Se puebla dinámicamente -->
+            </tbody>
+        </table>
+    </section>
+</div>
+
+<script>
+    let cargaDocentes = [];
+
+    // Cargar perfil del Administrador en la cabecera
+    async function cargarPerfilAdministrador() {
+        // Se busca el id del admin guardado al iniciar sesión o se usa un id predeterminado de prueba
+        const idAdmin = localStorage.getItem('usuario_id') || 1;
+
+        try {
+            const res = await fetch(`/api/admin/perfil/${idAdmin}`);
+            if (res.ok) {
+                const admin = await res.json();
+                document.getElementById('admin-nombre').innerText = admin.nombre_completo;
+                document.getElementById('admin-email').innerText = admin.email;
+                
+                // Obtener iniciales para el avatar
+                const partes = admin.nombre_completo.split(' ');
+                const iniciales = (partes[0][0] + (partes[1] ? partes[1][0] : '')).toUpperCase();
+                document.getElementById('admin-iniciales').innerText = iniciales;
+            } else {
+                // Si no hay respuesta del backend, mostrar usuario activo por defecto
+                document.getElementById('admin-nombre').innerText = "Admin Institucional";
+                document.getElementById('admin-email').innerText = "admin@radixecetp.edu.co";
+            }
+        } catch (error) {
+            console.error("Error al cargar perfil de admin:", error);
+            document.getElementById('admin-nombre').innerText = "Admin Institucional";
+        }
+    }
+
+    // Cargar Carga Académica de Profesores
+    async function cargarCargaAcademica() {
+        try {
+            const respuesta = await fetch('/api/carga-academica-docentes');
+            if (respuesta.ok) {
+                cargaDocentes = await respuesta.json();
+            } else {
+                cargaDocentes = [
+                    {
+                        nombre: "Carlos Alberto Pérez",
+                        documento: "71234567",
+                        sede: "Principal",
+                        es_director: "Sí (10°A)",
+                        grupos: ["10°A", "10°B", "11°A"],
+                        materias: ["Matemáticas", "Álgebra"]
+                    },
+                    {
+                        nombre: "María Fernanda Gómez",
+                        documento: "43987654",
+                        sede: "Escuelita",
+                        es_director: "Sí (3°B)",
+                        grupos: ["3°A", "3°B", "4°A"],
+                        materias: ["Lengua Castellana", "Plan Lector"]
+                    },
+                    {
+                        nombre: "Jhon Alexander Rios",
+                        documento: "98765432",
+                        sede: "Principal",
+                        es_director: "No",
+                        grupos: ["9°A", "9°B", "10°A", "10°B"],
+                        materias: ["Tecnología e Informática", "Media Técnica Web"]
+                    }
+                ];
+            }
+            renderizarTabla(cargaDocentes);
+            actualizarMétricas(cargaDocentes);
+        } catch (error) {
+            console.error('Error al obtener la carga académica:', error);
+        }
+    }
+
+    function renderizarTabla(datos) {
+        const tbody = document.getElementById('tabla-carga');
+        tbody.innerHTML = '';
+
+        if (datos.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#64748b;">No se encontraron docentes registrados.</td></tr>`;
+            return;
+        }
+
+        datos.forEach(prof => {
+            const badgeSede = prof.sede === 'Principal' ? 'badge-principal' : 'badge-escuelita';
+            const badgeDir = prof.es_director !== 'No' ? 'badge-director' : 'badge-materia';
+            const materiasTags = prof.materias.map(m => `<span class="badge badge-materia">${m}</span>`).join('');
+            const gruposTexto = Array.isArray(prof.grupos) ? prof.grupos.join(', ') : prof.grupos;
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${prof.nombre}</strong></td>
+                    <td>${prof.documento}</td>
+                    <td><span class="badge ${badgeSede}">${prof.sede}</span></td>
+                    <td><span class="badge ${badgeDir}">${prof.es_director}</span></td>
+                    <td>${gruposTexto}</td>
+                    <td><div class="materia-tag-list">${materiasTags}</div></td>
+                </tr>
+            `;
+        });
+    }
+
+    function actualizarMétricas(datos) {
+        document.getElementById('total-profesores').innerText = datos.length;
+        document.getElementById('total-principal').innerText = datos.filter(d => d.sede === 'Principal').length;
+        document.getElementById('total-escuelita').innerText = datos.filter(d => d.sede === 'Escuelita').length;
+        document.getElementById('total-directores').innerText = datos.filter(d => d.es_director !== 'No').length;
+    }
+
+    function filtrarTabla() {
+        const busqueda = document.getElementById('input-buscar').value.toLowerCase();
+        const sede = document.getElementById('select-sede').value;
+        const director = document.getElementById('select-director').value;
+
+        const filtrados = cargaDocentes.filter(p => {
+            const coincideNombreMateria = p.nombre.toLowerCase().includes(busqueda) || 
+                                          p.materias.some(m => m.toLowerCase().includes(busqueda));
+            const coincideSede = sede === '' || p.sede === sede;
+            const coincideDirector = director === '' || 
+                                     (director === 'Si' && p.es_director !== 'No') || 
+                                     (director === 'No' && p.es_director === 'No');
+
+            return coincideNombreMateria && coincideSede && coincideDirector;
+        });
+
+        renderizarTabla(filtrados);
+    }
+
+    function cerrarSesion() {
+        localStorage.removeItem('usuario_id');
+        localStorage.removeItem('rol');
+        window.location.href = '/login.html';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        cargarPerfilAdministrador();
+        cargarCargaAcademica();
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="es" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Educativa RADIxECETP - Portal Institucional</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        radix: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#074e74',
+                            900: '#0c3a53',
+                            accent: '#10b981'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="h-full text-slate-800 font-sans flex flex-col antialiased selection:bg-radix-500 selection:text-white">
+
+    <!-- MAIN NAVIGATION BAR -->
+    <header class="bg-radix-900 text-white sticky top-0 z-50 shadow-lg border-b border-radix-700/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Brand / Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="goToLanding()">
+                    <div class="bg-gradient-to-tr from-radix-600 to-radix-accent p-2.5 rounded-xl shadow-md ring-2 ring-white/10">
+                        <i class="fa-solid fa-atom text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-white block">RADIx<span class="text-radix-accent">ECETP</span></span>
+                        <span class="text-[10px] uppercase font-semibold text-radix-100/70 tracking-wider block -mt-1">Sistema Académico Integral</span>
+                    </div>
+                </div>
+
+                <!-- Navigation Status & Actions -->
+                <div id="nav-actions" class="flex items-center space-x-4">
+                    <!-- Dynamic Auth Controls Populated by JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main id="main-container" class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ========================================== -->
+        <!-- VIEW 1: LANDING PAGE & INDEX GENERAL RADIx -->
+        <!-- ========================================== -->
+        <section id="view-landing" class="space-y-12">
+            <!-- Hero Banner -->
+            <div class="bg-gradient-to-br from-radix-900 via-radix-800 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-radix-700/40">
+                <div class="absolute -right-10 -top-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-school-flag text-[280px]"></i>
+                </div>
+                <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs text-radix-100 font-medium border border-white/10">
+                            <i class="fa-solid fa-circle-check text-radix-accent"></i>
+                            <span>Plataforma Académica Oficial 2026</span>
+                        </div>
+                        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+                            Portal Educativo <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-radix-100 via-white to-radix-accent">RADIxECETP</span>
+                        </h1>
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl">
+                            Bienvenido al sistema institucional de gestión académica y disciplinaria. Consulte notas, observador, hoja de vida y seguimiento en línea de forma centralizada y segura.
+                        </p>
+                        <div class="flex flex-wrap gap-4 pt-2">
+                            <a href="#login-section" class="bg-radix-500 hover:bg-radix-600 text-white font-semibold px-6 py-3 rounded-xl shadow-lg transition-all duration-200 flex items-center space-x-2">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                <span>Iniciar Sesión</span>
+                            </a>
+                            <a href="#demo-users" class="bg-slate-800/80 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold px-6 py-3 rounded-xl border border-slate-700 transition-all duration-200 flex items-center space-x-2">
+                                <i class="fa-solid fa-users-viewfinder"></i>
+                                <span>Usuarios de Prueba</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Login Box / Status -->
+                    <div id="login-section" class="lg:col-span-5 bg-white text-slate-800 p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-100">
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold text-slate-900 flex items-center space-x-2">
+                                <i class="fa-solid fa-user-lock text-radix-600"></i>
+                                <span>Ingreso a la Plataforma</span>
+                            </h2>
+                            <p class="text-xs text-slate-500 mt-1">Ingrese sus credenciales registradas en la base de datos SQL.</p>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+                            <div>
+                                <label for="login-user" class="block text-xs font-semibold uppercase text-slate-600 mb-1">Correo Electrónico o Documento</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-envelope absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                                    <input type="text" id="login-user" required placeholder="ej. imary.mejia@gmail.com o 1032445717" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none transition-all">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="login-pass" class="block text-xs font-semibold uppercase text-slate-600 mb-1">Contraseña</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-key absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                                    <input type="password" id="login-pass" required placeholder="••••••••" class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none transition-all">
+                                </div>
+                            </div>
+
+                            <div id="login-alert" class="hidden p-3 rounded-xl text-xs font-medium bg-rose-50 border border-rose-200 text-rose-700 space-x-2 flex items-center">
+                                <i class="fa-solid fa-circle-exclamation text-rose-500 text-base"></i>
+                                <span id="login-alert-msg">Credenciales incorrectas</span>
+                            </div>
+
+                            <button type="submit" class="w-full bg-radix-900 hover:bg-radix-800 text-white font-semibold py-3 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center space-x-2">
+                                <span>Ingresar al Sistema</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Quick Access Section -->
+            <div id="demo-users" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">Acceso Rápido por Usuarios Registrados (Base de Datos)</h3>
+                        <p class="text-xs text-slate-500">Haga clic en cualquiera de los perfiles provistos en la BD para probar la autenticación y permisos de Rol.</p>
+                    </div>
+                    <span class="text-xs font-semibold bg-radix-50 text-radix-700 px-3 py-1 rounded-full border border-radix-200">
+                        BD: `prueba.sql`
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="demo-users-cards">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+
+            <!-- Servicios Institucionales Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base">Módulo de Estudiantes</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Acceso para la consulta de información académica personal, notas parciales, asignaturas, observador y descargos en línea.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base">Módulo de Docentes</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Gestión de planillas de calificaciones, registro de asistencias, creación de faltas disciplinarias y revisión de apelaciones.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 text-base">Coordinación y Admin</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Administración central de matrículas, asignación de materias, mantenimiento de grupos y parámetros globales del sistema.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: PORTAL DE ESTUDIANTE (CONMUTABLE)  -->
+        <!-- ========================================== -->
+        <section id="view-student-portal" class="hidden space-y-6">
+            <!-- Student Banner / Header -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="h-32 bg-gradient-to-r from-radix-900 via-radix-800 to-slate-900 relative">
+                    <div class="absolute top-4 right-4 flex items-center space-x-2">
+                        <span id="st-badge-estado" class="bg-emerald-500/20 backdrop-blur-md border border-emerald-400/40 text-emerald-200 text-xs px-3 py-1 rounded-full font-medium flex items-center space-x-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            <span>Estado: Activo</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="px-6 pb-6 relative flex flex-col sm:flex-row items-center sm:items-end justify-between -mt-14 gap-4">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-end space-y-3 sm:space-y-0 sm:space-x-5 text-center sm:text-left">
+                        <div class="w-28 h-28 rounded-2xl bg-white p-1.5 shadow-lg border border-slate-100 flex-shrink-0">
+                            <div id="st-avatar" class="w-full h-full rounded-xl bg-radix-900 text-white flex items-center justify-center text-3xl font-extrabold tracking-wider">
+                                IM
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-center sm:justify-start space-x-2">
+                                <h1 id="st-nombre-header" class="text-2xl font-bold text-slate-800">Imary Mejía Betancur</h1>
+                            </div>
+                            <p id="st-correo-header" class="text-slate-500 text-sm">imary.mejia@gmail.com</p>
+                            <div class="flex flex-wrap gap-2 mt-2 justify-center sm:justify-start">
+                                <span id="st-badge-rol" class="bg-radix-50 text-radix-700 border border-radix-200 text-xs px-2.5 py-0.5 rounded-md font-semibold">Rol: Estudiante</span>
+                                <span id="st-badge-grupo" class="bg-slate-100 text-slate-700 text-xs px-2.5 py-0.5 rounded-md font-semibold">Grupo 11-1</span>
+                                <span id="st-badge-doc" class="bg-slate-100 text-slate-600 font-mono text-xs px-2.5 py-0.5 rounded-md">Doc: 1032445717</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Action Controls -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="goToLanding()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-all flex items-center space-x-1.5">
+                            <i class="fa-solid fa-house"></i>
+                            <span>Inicio General</span>
+                        </button>
+                        <button onclick="handleLogout()" class="px-4 py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold rounded-xl border border-rose-200 transition-all flex items-center space-x-1.5">
+                            <i class="fa-solid fa-power-off"></i>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sub-Navigation Tabs inside Student Portal -->
+                <div class="px-6 border-t border-slate-100 bg-slate-50/50 flex space-x-2 sm:space-x-6 overflow-x-auto">
+                    <button id="tab-btn-perfil" onclick="switchStudentTab('perfil')" class="py-3 px-1 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <span>Perfil & Acudiente</span>
+                    </button>
+                    <button id="tab-btn-observador" onclick="switchStudentTab('observador')" class="py-3 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        <span>Observador & Anotaciones</span>
+                        <span id="st-count-anotaciones" class="bg-amber-100 text-amber-800 text-[10px] font-bold px-1.5 py-0.5 rounded-full">2</span>
+                    </button>
+                    <button id="tab-btn-notas" onclick="switchStudentTab('notas')" class="py-3 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <span>Boletín / Notas</span>
+                    </button>
+                    <button id="tab-btn-horario" onclick="switchStudentTab('horario')" class="py-3 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2">
+                        <i class="fa-solid fa-book font-semibold"></i>
+                        <span>Asignaturas del Grupo</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- TAB 1: PERFIL GENERAL -->
+            <div id="tab-content-perfil" class="space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Informacion de Persona -->
+                    <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-6">
+                        <div class="flex items-center space-x-3 pb-3 border-b border-slate-100">
+                            <div class="bg-radix-50 text-radix-600 p-2.5 rounded-xl">
+                                <i class="fa-solid fa-address-card text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-base">Información Básica Institucional</h3>
+                                <p class="text-xs text-slate-500">Datos obtenidos de la entidad <code class="bg-slate-100 px-1.5 py-0.5 rounded text-radix-700">persona</code></p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Documento de Identidad</span>
+                                <span id="st-det-doc" class="font-bold text-slate-800 font-mono text-base">1032445717</span>
+                            </div>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Nombres y Apellidos</span>
+                                <span id="st-det-nombre" class="font-bold text-slate-800">Imary Mejía Betancur</span>
+                            </div>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Correo Electrónico</span>
+                                <span id="st-det-correo" class="font-medium text-slate-800">imentary.mejia@gmail.com</span>
+                            </div>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Teléfono de Contacto</span>
+                                <span id="st-det-telefono" class="font-medium text-slate-800">3022445717</span>
+                            </div>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Género</span>
+                                <span id="st-det-genero" class="font-medium text-slate-800">Femenino</span>
+                            </div>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                                <span class="block text-xs font-semibold text-slate-400 uppercase">Identificadores BD</span>
+                                <span id="st-det-ids" class="font-mono text-xs font-medium text-slate-700">id_persona: 1 | id_estudiante: 1</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Datos del Acudiente -->
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6 space-y-4">
+                        <div class="flex items-center space-x-3 pb-3 border-b border-slate-100">
+                            <div class="bg-indigo-50 text-indigo-600 p-2.5 rounded-xl">
+                                <i class="fa-solid fa-users text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-base">Datos del Acudiente</h3>
+                                <p class="text-xs text-slate-500">Representante de la tabla <code class="bg-slate-100 px-1 rounded text-indigo-700">estudiante</code></p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3 text-sm">
+                            <div class="bg-indigo-50/40 p-4 rounded-xl border border-indigo-100">
+                                <span class="block text-xs font-semibold text-indigo-900/60 uppercase">Nombre Completo</span>
+                                <span id="st-det-acudiente-nombre" class="font-bold text-slate-800 text-base block mt-0.5">Maria Elena Betancur</span>
+                            </div>
+
+                            <div class="bg-indigo-50/40 p-4 rounded-xl border border-indigo-100">
+                                <span class="block text-xs font-semibold text-indigo-900/60 uppercase">Parentesco</span>
+                                <span id="st-det-acudiente-parentesco" class="font-bold text-slate-800 text-base block mt-0.5">Madre</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ANOTACIONES Y OBSERVADOR -->
+            <div id="tab-content-observador" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                    <div class="flex items-center justify-between mb-6 pb-3 border-b border-slate-100 flex-wrap gap-2">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-amber-50 text-amber-600 p-2.5 rounded-xl">
+                                <i class="fa-solid fa-book-bookmark text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Observador Disciplinario</h3>
+                                <p class="text-xs text-slate-500">Anotaciones asociadas a su id_estudiante / id_persona</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="st-anotaciones-container" class="space-y-4">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: NOTAS Y BOLETÍN -->
+            <div id="tab-content-notas" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-100 flex items-center justify-between flex-wrap gap-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="bg-emerald-50 text-emerald-600 p-2.5 rounded-xl">
+                                <i class="fa-solid fa-file-signature text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-lg">Boletín Parcial de Calificaciones</h3>
+                                <p class="text-xs text-slate-500">Registro de talleres, autoevaluaciones y coevaluaciones</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-50 px-4 py-2 rounded-xl border border-slate-200 text-right">
+                            <span class="block text-[10px] font-semibold text-slate-400 uppercase">Promedio General</span>
+                            <span id="st-promedio-num" class="text-lg font-extrabold text-slate-800 font-mono">3.30</span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 text-xs uppercase font-semibold text-slate-500 border-b border-slate-200">
+                                    <th class="py-3.5 px-4">Descripción de la Actividad</th>
+                                    <th class="py-3.5 px-3 text-center">Calificación</th>
+                                    <th class="py-3.5 px-3 text-center">Autoevaluación</th>
+                                    <th class="py-3.5 px-3 text-center">Coevaluación</th>
+                                    <th class="py-3.5 px-3 text-center font-bold text-slate-800">Nota Total</th>
+                                    <th class="py-3.5 px-4 text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="st-tabla-notas-body" class="divide-y divide-slate-100 text-sm">
+                                <!-- Populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ASIGNATURAS Y HORARIO -->
+            <div id="tab-content-horario" class="hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-6">
+                    <div class="flex items-center space-x-3 mb-6 pb-3 border-b border-slate-100">
+                        <div class="bg-purple-50 text-purple-600 p-2.5 rounded-xl">
+                            <i class="fa-solid fa-book-open text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-lg">Asignaturas Matriculadas</h3>
+                            <p class="text-xs text-slate-500">Materias correspondientes al plan de estudio del grupo <strong id="st-horario-grupo-name">11-1</strong></p>
+                        </div>
+                    </div>
+
+                    <div id="st-materias-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Populated via JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div class="flex items-center space-x-2">
+                <span class="font-extrabold text-slate-700">RADIxECETP &copy; 2026</span>
+                <span>•</span>
+                <span>Plataforma Académica de Pruebas</span>
+            </div>
+            <div id="footer-status-user" class="text-slate-400">
+                Estado: Invitado (Sin autenticar)
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT & EMBEDDED SQL DATABASE LOGIC   -->
+    <!-- ========================================== -->
+    <script>
+        /**
+         * Base de Datos cargada exactamente con el volcado SQL de `prueba.sql`
+         */
+        const DATABASE = {
+            // Tabla persona
+            personas: [
+                { id_persona: 1, documento_identidad: 1032445717, nombre_1: 'Imary', nombre_2: null, apellido_1: 'Mejía', apellido_2: 'Betancur', correo_electronico: 'imary.mejia@gmail.com', telefono: '3022445717', genero: 'Femenino', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 2, documento_identidad: 10010019, nombre_1: 'Alejandro', nombre_2: null, apellido_1: 'Gómez', apellido_2: 'Restrepo', correo_electronico: 'agomez@gmail.com', telefono: '3110001122', genero: 'Masculino', rol: 'Estudiante', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 3, documento_identidad: 10010009, nombre_1: 'Wilson', nombre_2: 'de Jesús', apellido_1: 'Quintero', apellido_2: null, correo_electronico: 'wquintero@elpinal.edu.co', telefono: '3147892011', genero: 'Masculino', rol: 'Docente', contraseña: '12345678', estado: 'Activo' },
+                { id_persona: 4, documento_identidad: 10010001, nombre_1: 'Admin', nombre_2: null, apellido_1: 'General', apellido_2: null, correo_electronico: 'admin@radix.edu.co', telefono: '3000000000', genero: 'Masculino', rol: 'Administrador', contraseña: 'admin2026', estado: 'Activo' }
+            ],
+
+            // Tabla estudiante
+            estudiantes: [
+                { id_estudiante: 1, id_persona: 1, id_grupo: 1, nombre_completo_acudiente: 'Maria Elena Betancur', parentezco_acudiente: 'Madre' },
+                { id_estudiante: 2, id_persona: 2, id_grupo: 1, nombre_completo_acudiente: 'Carlos Gómez', parentezco_acudiente: 'Padre' }
+            ],
+
+            // Tabla grupo
+            grupos: [
+                { id_grupo: 1, nombre_grupo: '11-1', jornada: 'Mañana', grado: 11 },
+                { id_grupo: 2, nombre_grupo: '10-1', jornada: 'Mañana', grado: 10 }
+            ],
+
+            // Tabla matricula
+            matriculas: [
+                { id_matricula: 1, id_persona: 1, id_grupo: 1, anio_lectivo: 2026 },
+                { id_matricula: 2, id_persona: 2, id_grupo: 1, anio_lectivo: 2026 }
+            ],
+
+            // Tabla materia
+            materias: [
+                { id_materia: 1, nombre_materia: 'Sistemas y Redes', intensidad_horaria: 4 },
+                { id_materia: 2, nombre_materia: 'Mantenimiento de Cómputo', intensidad_horaria: 3 },
+                { id_materia: 3, nombre_materia: 'Lógica de Programación', intensidad_horaria: 5 }
+            ],
+
+            // Tabla notas
+            notas: [
+                { id_nota: 1, calficacion: 4.50, autoevaluacion: 4.00, coevalucion: 4.50, total: 4.30, estado: 'Aprobado', descripcion: 'Taller 1: Funciones Matemáticas' },
+                { id_nota: 2, calficacion: 2.00, autoevaluacion: 3.00, coevalucion: 2.50, total: 2.30, estado: 'Reprobado', descripcion: 'Evaluación Parcial: Redes LAN' }
+            ],
+
+            // Tabla anotaciones
+            anotaciones: [
+                {
+                    id_anotacion: 1,
+                    id_estudiante: 1, // Corresponde a id_persona 1 en FK
+                    id_docente: 3,
+                    docente_nombre: 'Wilson de Jesús Quintero',
+                    fecha_hora: '2026-08-05 09:15:00',
+                    tipo_falta: 'Tipo 1 - Leve',
+                    descripcion_anotacion: 'El estudiante se encontraba utilizando el dispositivo móvil durante el desarrollo de la explicación práctica de ensamble de hardware, desatendiendo la instrucción impartida en el aula.',
+                    version_estudiante: 'Estaba revisando la guía en PDF sobre ensamble que el profesor subió previamente al grupo de estudio, no estaba jugando.',
+                    estado_apelacion: 'En Revisión'
+                },
+                {
+                    id_anotacion: 2,
+                    id_estudiante: 1, // Corresponde a id_persona 1 en FK
+                    id_docente: 3,
+                    docente_nombre: 'Wilson de Jesús Quintero',
+                    fecha_hora: '2026-07-28 07:35:00',
+                    tipo_falta: 'Tipo 2 - Grave',
+                    descripcion_anotacion: 'Ingreso al aula con 35 minutos de retraso interrumpiendo la evaluación parcial en curso sin presentar justificación de la coordinación disciplinaria.',
+                    version_estudiante: null,
+                    estado_apelacion: 'Sin Apelación'
+                }
+            ]
+        };
+
+        // Session State variables
+        let currentAuthenticatedUser = null; // Object persona
+        let activeStudentTab = 'perfil';
+
+        window.onload = function() {
+            renderDemoUserCards();
+            updateNavActions();
+        };
+
+        /**
+         * Renderiza las tarjetas de prueba rápida para la landing page
+         */
+        function renderDemoUserCards() {
+            const container = document.getElementById('demo-users-cards');
+            container.innerHTML = '';
+
+            DATABASE.personas.forEach(user => {
+                const nombre = `${user.nombre_1} ${user.apellido_1}`;
+                const card = document.createElement('div');
+                
+                let badgeColor = "bg-radix-50 text-radix-700 border-radix-200";
+                let iconRole = "fa-graduation-cap";
+
+                if (user.rol === 'Docente') {
+                    badgeColor = "bg-amber-50 text-amber-700 border-amber-200";
+                    iconRole = "fa-chalkboard-user";
+                } else if (user.rol === 'Administrador') {
+                    badgeColor = "bg-purple-50 text-purple-700 border-purple-200";
+                    iconRole = "fa-user-shield";
+                }
+
+                card.className = "bg-white p-4 rounded-2xl border border-slate-200 hover:border-radix-500 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-3 group";
+                card.onclick = () => loginAsUser(user.id_persona);
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-md text-xs font-semibold border ${badgeColor}">
+                            <i class="fa-solid ${iconRole}"></i>
+                            <span>${user.rol}</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-400">ID: ${user.id_persona}</span>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm group-hover:text-radix-600 transition-colors">${nombre}</h4>
+                        <p class="text-xs text-slate-500 truncate">${user.correo_electronico}</p>
+                        <p class="text-[11px] font-mono text-slate-400 mt-1">Doc: ${user.documento_identidad}</p>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-radix-600 font-medium">
+                        <span>Acceder como este usuario</span>
+                        <i class="fa-solid fa-chevron-right text-[10px] transform group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Manejador del formulario de inicio de sesión
+         */
+        function handleLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('login-user').value.trim();
+            const passInput = document.getElementById('login-pass').value.trim();
+            const alertBox = document.getElementById('login-alert');
+            const alertMsg = document.getElementById('login-alert-msg');
+
+            // Buscar usuario por correo o por documento
+            const foundUser = DATABASE.personas.find(p => 
+                (p.correo_electronico.toLowerCase() === userInput.toLowerCase() || p.documento_identidad.toString() === userInput) &&
+                p.contraseña === passInput
+            );
+
+            if (!foundUser) {
+                alertMsg.textContent = 'Credenciales no encontradas o clave incorrecta.';
+                alertBox.classList.remove('hidden');
+                return;
+            }
+
+            alertBox.classList.add('hidden');
+            authenticateAndRedirect(foundUser);
+        }
+
+        /**
+         * Atajo para login directo desde tarjetas demo
+         */
+        function loginAsUser(idPersona) {
+            const foundUser = DATABASE.personas.find(p => p.id_persona === idPersona);
+            if (foundUser) {
+                authenticateAndRedirect(foundUser);
+            }
+        }
+
+        /**
+         * Autentica y aplica restricción/validación de ROL
+         */
+        function authenticateAndRedirect(user) {
+            currentAuthenticatedUser = user;
+
+            // Validación estricta de Rol
+            if (user.rol === 'Estudiante') {
+                updateNavActions();
+                showStudentPortal(user.id_persona);
+            } else {
+                // Si es Docente o Administrador
+                alert(`[ROL: ${user.rol.toUpperCase()}]\n\nBienvenido(a) ${user.nombre_1} ${user.apellido_1}.\nActualmente solo el Módulo e Interfaz de 'Estudiante' se encuentra habilitado para esta demostración.`);
+                updateNavActions();
+                goToLanding();
+            }
+        }
+
+        /**
+         * Actualiza el menú de navegación superior y footer
+         */
+        function updateNavActions() {
+            const navContainer = document.getElementById('nav-actions');
+            const footerStatus = document.getElementById('footer-status-user');
+
+            if (!currentAuthenticatedUser) {
+                navContainer.innerHTML = `
+                    <a href="#login-section" class="bg-radix-500 hover:bg-radix-600 text-white text-xs font-semibold px-4 py-2 rounded-xl transition-all flex items-center space-x-1.5">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Iniciar Sesión</span>
+                    </a>
+                `;
+                footerStatus.innerHTML = `Estado: <span class="font-semibold text-slate-600">Invitado (Sin sesión)</span>`;
+            } else {
+                const nombreShort = `${currentAuthenticatedUser.nombre_1} ${currentAuthenticatedUser.apellido_1}`;
+                navContainer.innerHTML = `
+                    <div class="flex items-center space-x-3 bg-radix-800/80 px-3 py-1.5 rounded-xl border border-radix-700">
+                        <div class="text-right">
+                            <span class="block text-xs font-bold text-white">${nombreShort}</span>
+                            <span class="block text-[10px] text-radix-200 uppercase font-semibold">${currentAuthenticatedUser.rol}</span>
+                        </div>
+                        <button onclick="handleLogout()" title="Cerrar Sesión" class="text-slate-300 hover:text-rose-400 p-1.5 transition-colors">
+                            <i class="fa-solid fa-power-off text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                footerStatus.innerHTML = `Usuario Activo: <strong class="text-slate-700">${nombreShort} (${currentAuthenticatedUser.rol})</strong>`;
+            }
+        }
+
+        /**
+         * Cierra la sesión
+         */
+        function handleLogout() {
+            currentAuthenticatedUser = null;
+            updateNavActions();
+            goToLanding();
+        }
+
+        /**
+         * Muestra la vista landing / inicio
+         */
+        function goToLanding() {
+            document.getElementById('view-landing').classList.remove('hidden');
+            document.getElementById('view-student-portal').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * Carga la vista del Portal Estudiantil en base al ID de Persona
+         */
+        function showStudentPortal(idPersona) {
+            document.getElementById('view-landing').classList.add('hidden');
+            document.getElementById('view-student-portal').classList.remove('hidden');
+
+            const persona = DATABASE.personas.find(p => p.id_persona === idPersona);
+            const estudiante = DATABASE.estudiantes.find(e => e.id_persona === idPersona);
+            const matricula = DATABASE.matriculas.find(m => m.id_persona === idPersona);
+            const grupo = DATABASE.grupos.find(g => g.id_grupo === (estudiante ? estudiante.id_grupo : 1));
+            const anotacionesList = DATABASE.anotaciones.filter(a => a.id_estudiante === idPersona);
+
+            if (!persona) return;
+
+            const nombreCompleto = `${persona.nombre_1} ${persona.nombre_2 || ''} ${persona.apellido_1} ${persona.apellido_2 || ''}`.replace(/\s+/g, ' ').trim();
+            const iniciales = `${persona.nombre_1.charAt(0)}${persona.apellido_1.charAt(0)}`;
+
+            // Header Portal
+            document.getElementById('st-avatar').textContent = iniciales;
+            document.getElementById('st-nombre-header').textContent = nombreCompleto;
+            document.getElementById('st-correo-header').textContent = persona.correo_electronico;
+            document.getElementById('st-badge-doc').textContent = `Doc: ${persona.documento_identidad}`;
+            document.getElementById('st-badge-grupo').textContent = `Grupo ${grupo ? grupo.nombre_grupo : '11-1'}`;
+            document.getElementById('st-count-anotaciones').textContent = anotacionesList.length;
+
+            // TAB 1: Perfil General Data
+            document.getElementById('st-det-doc').textContent = persona.documento_identidad;
+            document.getElementById('st-det-nombre').textContent = nombreCompleto;
+            document.getElementById('st-det-correo').textContent = persona.correo_electronico || 'No registrado';
+            document.getElementById('st-det-telefono').textContent = persona.telefono || 'No registrado';
+            document.getElementById('st-det-genero').textContent = persona.genero;
+            document.getElementById('st-det-ids').textContent = `id_persona: ${persona.id_persona} | id_estudiante: ${estudiante ? estudiante.id_estudiante : 'N/A'}`;
+
+            if (estudiante) {
+                document.getElementById('st-det-acudiente-nombre').textContent = estudiante.nombre_completo_acudiente || 'No asignado';
+                document.getElementById('st-det-acudiente-parentesco').textContent = estudiante.parentezco_acudiente || 'No asignado';
+            }
+
+            // TAB 2: Anotaciones & Observador
+            renderAnotaciones(anotacionesList, idPersona);
+
+            // TAB 3: Boletín & Notas
+            renderNotas();
+
+            // TAB 4: Asignaturas
+            document.getElementById('st-horario-grupo-name').textContent = grupo ? grupo.nombre_grupo : '11-1';
+            renderMaterias();
+
+            // Activar tab perfil por defecto
+            switchStudentTab('perfil');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /**
+         * Renderiza el listado de anotaciones del observador y permite editar versión de estudiante
+         */
+        function renderAnotaciones(anotacionesList, idPersona) {
+            const container = document.getElementById('st-anotaciones-container');
+            container.innerHTML = '';
+
+            if (anotacionesList.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <i class="fa-solid fa-circle-check text-emerald-500 text-3xl mb-2"></i>
+                        <h4 class="font-bold text-slate-800 text-base">Excelente Historial Disciplinario</h4>
+                        <p class="text-xs text-slate-500 mt-0.5">El estudiante no tiene ninguna anotación en el observador escolar.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            anotacionesList.forEach(anot => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50/80 rounded-2xl border border-slate-200 p-5 space-y-4";
+
+                let badgeTipo = "bg-amber-100 text-amber-900 border-amber-200";
+                if (anot.tipo_falta.includes('Grave')) badgeTipo = "bg-orange-100 text-orange-900 border-orange-200";
+                if (anot.tipo_falta.includes('Gravísima')) badgeTipo = "bg-rose-100 text-rose-900 border-rose-200";
+
+                let badgeApelacion = "bg-slate-200 text-slate-700";
+                if (anot.estado_apelacion === 'En Revisión') badgeApelacion = "bg-amber-100 text-amber-800 border-amber-300";
+                if (anot.estado_apelacion === 'Aprobada') badgeApelacion = "bg-emerald-100 text-emerald-800 border-emerald-300";
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-200">
+                        <div class="flex items-center space-x-2">
+                            <span class="bg-radix-900 text-white font-bold text-xs px-2.5 py-1 rounded-md">
+                                Anotación #${anot.id_anotacion}
+                            </span>
+                            <span class="border font-semibold text-xs px-2.5 py-1 rounded-md ${badgeTipo}">
+                                ${anot.tipo_falta}
+                            </span>
+                        </div>
+                        <span class="text-xs text-slate-500 font-mono flex items-center space-x-1">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>${anot.fecha_hora}</span>
+                        </span>
+                    </div>
+
+                    <div>
+                        <h5 class="text-xs font-semibold uppercase text-slate-400 mb-1">Descripción de la Falta</h5>
+                        <p class="text-sm text-slate-800 bg-white p-3.5 rounded-xl border border-slate-200 leading-relaxed">
+                            ${anot.descripcion_anotacion}
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                        <!-- Versión / Descargo del Estudiante -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col justify-between space-y-3">
+                            <div>
+                                <span class="font-bold text-slate-700 block mb-1">
+                                    <i class="fa-solid fa-comment-dots text-radix-500 mr-1"></i> Versión del Estudiante:
+                                </span>
+                                <p id="text-version-${anot.id_anotacion}" class="text-slate-700 italic">
+                                    ${anot.version_estudiante ? `"${anot.version_estudiante}"` : '<span class="text-slate-400 not-italic">Aún no se ha registrado un descargo formal.</span>'}
+                                </p>
+                            </div>
+
+                            <!-- Formulario simulado para agregar/editar descargo -->
+                            <div class="pt-2 border-t border-slate-100">
+                                <button onclick="toggleVersionesForm(${anot.id_anotacion})" class="text-radix-600 hover:text-radix-700 font-semibold flex items-center space-x-1">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                    <span>${anot.version_estudiante ? 'Modificar mi versión' : 'Ingresar mi versión o descargo'}</span>
+                                </button>
+
+                                <div id="form-version-${anot.id_anotacion}" class="hidden mt-3 space-y-2">
+                                    <textarea id="input-version-${anot.id_anotacion}" rows="3" class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white focus:ring-2 focus:ring-radix-500 focus:outline-none" placeholder="Escriba su versión de los hechos...">${anot.version_estudiante || ''}</textarea>
+                                    <div class="flex justify-end space-x-2">
+                                        <button onclick="toggleVersionesForm(${anot.id_anotacion})" class="px-3 py-1.5 bg-slate-100 text-slate-600 rounded-lg font-medium">Cancelar</button>
+                                        <button onclick="saveEstudianteVersion(${anot.id_anotacion})" class="px-3 py-1.5 bg-radix-600 hover:bg-radix-700 text-white rounded-lg font-medium">Guardar Versión</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Docente & Apelación -->
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col justify-between space-y-2">
+                            <div>
+                                <span class="font-semibold text-slate-500 block">Docente Emisor:</span>
+                                <span class="text-slate-800 font-bold">${anot.docente_nombre}</span>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100 flex items-center justify-between">
+                                <span class="text-slate-500">Estado Apelación:</span>
+                                <span class="font-semibold px-2.5 py-0.5 rounded-full border text-[11px] ${badgeApelacion}">
+                                    ${anot.estado_apelacion}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Abre/cierra el formulario de edición de versión del estudiante
+         */
+        function toggleVersionesForm(idAnotacion) {
+            const form = document.getElementById(`form-version-${idAnotacion}`);
+            form.classList.toggle('hidden');
+        }
+
+        /**
+         * Guarda la versión del estudiante en la estructura JavaScript (Simulando UPDATE en BD)
+         */
+        function saveEstudianteVersion(idAnotacion) {
+            const val = document.getElementById(`input-version-${idAnotacion}`).value.trim();
+            const targetAnot = DATABASE.anotaciones.find(a => a.id_anotacion === idAnotacion);
+            if (targetAnot) {
+                targetAnot.version_estudiante = val || null;
+                if (val && targetAnot.estado_apelacion === 'Sin Apelación') {
+                    targetAnot.estado_apelacion = 'En Revisión';
+                }
+                // Re-renderizar anotaciones
+                renderAnotaciones(DATABASE.anotaciones.filter(a => a.id_estudiante === currentAuthenticatedUser.id_persona), currentAuthenticatedUser.id_persona);
+            }
+        }
+
+        /**
+         * Renderiza la tabla de notas
+         */
+        function renderNotas() {
+            const tbody = document.getElementById('st-tabla-notas-body');
+            tbody.innerHTML = '';
+
+            let suma = 0;
+            DATABASE.notas.forEach(nota => {
+                suma += parseFloat(nota.total);
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors";
+
+                const isAprobado = nota.estado === 'Aprobado';
+                const badgeStyle = isAprobado 
+                    ? "bg-emerald-100 text-emerald-800 border-emerald-200" 
+                    : "bg-rose-100 text-rose-800 border-rose-200";
+
+                tr.innerHTML = `
+                    <td class="py-3.5 px-4 font-semibold text-slate-800">${nota.descripcion}</td>
+                    <td class="py-3.5 px-3 text-center font-mono text-slate-600">${parseFloat(nota.calficacion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono text-slate-500">${parseFloat(nota.autoevaluacion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono text-slate-500">${parseFloat(nota.coevalucion).toFixed(2)}</td>
+                    <td class="py-3.5 px-3 text-center font-mono font-extrabold text-slate-900">${parseFloat(nota.total).toFixed(2)}</td>
+                    <td class="py-3.5 px-4 text-center">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold border ${badgeStyle}">
+                            ${isAprobado ? '<i class="fa-solid fa-check text-[10px] mr-1"></i>' : '<i class="fa-solid fa-xmark text-[10px] mr-1"></i>'}
+                            ${nota.estado}
+                        </span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            const promedio = (suma / DATABASE.notas.length).toFixed(2);
+            document.getElementById('st-promedio-num').textContent = promedio;
+        }
+
+        /**
+         * Renderiza las asignaturas del grupo
+         */
+        function renderMaterias() {
+            const container = document.getElementById('st-materias-container');
+            container.innerHTML = '';
+
+            DATABASE.materias.forEach(mat => {
+                const card = document.createElement('div');
+                card.className = "bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col justify-between space-y-2";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-book-bookmark text-radix-500"></i>
+                        <h4 class="font-bold text-slate-800 text-sm">${mat.nombre_materia}</h4>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-slate-200/60">
+                        <span>Intensidad Horaria:</span>
+                        <span class="font-bold text-radix-700 bg-radix-50 px-2 py-0.5 rounded border border-radix-200">${mat.intensidad_horaria} Horas/Semana</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        /**
+         * Conmuta entre las pestañas internas del perfil de estudiante
+         */
+        function switchStudentTab(tabName) {
+            activeStudentTab = tabName;
+            const tabs = ['perfil', 'observador', 'notas', 'horario'];
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-btn-${t}`);
+                const content = document.getElementById(`tab-content-${t}`);
+
+                if (t === tabName) {
+                    btn.className = "py-3 px-1 border-b-2 border-radix-600 text-radix-700 font-bold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.remove('hidden');
+                } else {
+                    btn.className = "py-3 px-1 border-b-2 border-transparent text-slate-500 hover:text-slate-800 font-semibold text-xs sm:text-sm whitespace-nowrap flex items-center space-x-2";
+                    content.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
