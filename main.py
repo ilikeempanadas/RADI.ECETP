@@ -398,22 +398,6 @@ def eliminar_nota(id_nota: int):
 
 
 # ============================================================
-# EJECUCIÓN DEL SERVIDOR
-# ============================================================
-
-if __name__ == "__main__":
-    import importlib
-
-    uvicorn = importlib.import_module("uvicorn")
-
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", "8000"))
-
-    print(f"\n🚀 Servidor RADIxECETP activo en: http://{host}:{port}")
-    print("📚 Panel de Documentación interactivo: /docs\n")
-
-    uvicorn.run(app, host=host, port=port)
-    # ============================================================
 # INFORMACIÓN DEL ADMINISTRADOR AUTENTICADO
 # ============================================================
 
@@ -436,3 +420,15 @@ def obtener_perfil_admin(id_usuario: int):
         "email": admin["email"],
         "rol": admin["rol"]
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    host = os.getenv("HOST", "0.0.0.0")
+    port = int(os.getenv("PORT", "8000"))
+
+    print(f"\n🚀 Servidor RADIxECETP activo en: http://{host}:{port}")
+    print("📚 Panel de Documentación interactivo: /docs\n")
+
+    uvicorn.run("main:app", host=host, port=port, reload=False)
