@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: radixecetp-api
+    env: python
+    region: oregon # O puedes cambiarlo según tu preferencia
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DB_HOST
+        sync: false
+      - key: DB_PORT
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
